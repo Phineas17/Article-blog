@@ -73,10 +73,30 @@
     .nav-links a:hover { color: var(--accent); }
 
     /* ─── HERO ─── */
+    .hero-wrapper {
+      position: relative;
+      background-color: var(--bg);
+      background-image: radial-gradient(circle, #c4bdb4 1.2px, transparent 1.2px);
+      background-size: 22px 22px;
+    }
+
+    .hero-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 140px;
+      background: linear-gradient(to bottom, transparent, var(--bg));
+      pointer-events: none;
+    }
+
     .hero {
       padding: 140px 48px 100px;
       max-width: 960px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-tag {
@@ -473,15 +493,17 @@
   </nav>
 
   <!-- HERO -->
-  <header class="hero">
-    <div class="hero-tag">Entrepreneur · Kinshasa & Montréal</div>
-    <h1>Bâtir des infrastructures pour l'<em>Afrique de demain.</em></h1>
-    <p class="hero-sub">
-      Je construis des entreprises à l'intersection de la technologie et des marchés émergents —
-      du transfert d'argent à l'intelligence artificielle.
-    </p>
-    <a href="#ventures" class="hero-cta">Découvrir mes projets</a>
-  </header>
+  <div class="hero-wrapper">
+    <header class="hero">
+      <div class="hero-tag">Entrepreneur · Kinshasa & Montréal</div>
+      <h1>Bâtir des infrastructures pour l'<em>Afrique de demain.</em></h1>
+      <p class="hero-sub">
+        Je construis des entreprises à l'intersection de la technologie et des marchés émergents —
+        du transfert d'argent à l'intelligence artificielle.
+      </p>
+      <a href="#ventures" class="hero-cta">Découvrir mes projets</a>
+    </header>
+  </div>
 
   <hr class="section-divider">
 
