@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La réceptionniste humaine a atteint ses limites naturelles — Phineas</title>
+  <meta name="description" content="L'IA et les centres d'appels : repositionnement humain, agents vocaux, et l'ère du pilotage de la machine.">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #FAF9F7;
+      --noir: #1A1A1A;
+      --accent: #C96442;
+      --gris: #6B6660;
+      --ligne: #E5E2DC;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--noir);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      min-height: 100vh;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--ligne);
+      padding: 0 48px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-back {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gris);
+      text-decoration: none;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--accent); }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--noir);
+      text-decoration: none;
+    }
+
+    .nav-section {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gris);
+    }
+
+    /* ─── ARTICLE ─── */
+    .wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 100px 48px 80px;
+    }
+
+    .tag {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .tag::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      margin-bottom: 20px;
+      color: var(--noir);
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--gris);
+      margin-bottom: 52px;
+      font-weight: 300;
+      line-height: 1.7;
+      border-left: 2px solid var(--accent);
+      padding-left: 18px;
+    }
+
+    .image-block {
+      width: 100%;
+      height: 340px;
+      background: #d8d4cd;
+      margin-bottom: 56px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .image-block img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: grayscale(10%) contrast(1.05);
+    }
+
+    .image-caption {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background: rgba(26, 26, 26, 0.8);
+      color: #fff;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #2E2B27;
+      margin-bottom: 24px;
+      line-height: 1.85;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      margin: 52px 0 18px;
+      color: var(--noir);
+      position: relative;
+      padding-bottom: 14px;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 36px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--ligne);
+      margin: 44px 0;
+      border: 1px solid var(--ligne);
+    }
+
+    .stat {
+      background: var(--bg);
+      padding: 32px 20px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--gris);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 10px;
+      display: block;
+    }
+
+    .pull-quote {
+      border-top: 1px solid var(--noir);
+      border-bottom: 1px solid var(--noir);
+      padding: 36px 0;
+      margin: 52px 0;
+    }
+
+    .pull-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-style: italic;
+      font-weight: 700;
+      color: var(--noir);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .divider {
+      width: 48px;
+      height: 1px;
+      background: var(--accent);
+      margin: 44px 0;
+    }
+
+    .cta-block {
+      background: var(--noir);
+      color: var(--bg);
+      padding: 44px 40px;
+      margin-top: 60px;
+    }
+
+    .cta-block p {
+      color: #b8b4ae;
+      margin-bottom: 0;
+      line-height: 1.8;
+    }
+
+    .cta-block strong {
+      color: var(--accent);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      display: block;
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+
+    .footer-tags {
+      margin-top: 52px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-tags span {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gris);
+      border: 1px solid var(--ligne);
+      padding: 5px 14px;
+    }
+
+    .article-footer {
+      margin-top: 72px;
+      padding-top: 32px;
+      border-top: 1px solid var(--ligne);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .back-link {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.2s;
+    }
+
+    .back-link:hover { opacity: 0.7; }
+
+    .author-note {
+      font-size: 12px;
+      color: var(--gris);
+      text-align: right;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 20px; }
+      .nav-section { display: none; }
+      .wrapper { padding: 90px 20px 60px; }
+      .stat-row { grid-template-columns: 1fr; }
+      .article-footer { flex-direction: column; gap: 16px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-back">← Retour</a>
+    <a href="../index.html" class="nav-logo">Phineas</a>
+    <span class="nav-section">Articles</span>
+  </nav>
+
+  <div class="wrapper">
+
+    <div class="tag">Intelligence Artificielle &amp; Entreprise</div>
+
+    <h1>La réceptionniste humaine a atteint <em>ses limites naturelles.</em></h1>
+
+    <p class="subtitle">
+      Et ce n'est pas une critique — c'est une réalité biologique, économique et organisationnelle
+      que l'IA vient désormais résoudre.
+    </p>
+
+    <div class="image-block">
+      <img src="../DRGkyacMpVroQgrgcehQBCyjYJWDkSJ2lFHpp4CCxRKs82-oV1HIe6vJel-R1o6tZ9HF7N5dS6mGnARJCNr7ScRUwJNo9W0kJKxf3sV6qCOwEsA8KarE0fK51TQmQgQKH8M3-125Eu5B5AAPOzCrr52tm1FrG7Pphq5UMHW_lJNl5S-0z6CBizEbX2liF8zq.jpeg" alt="Réceptionniste fatiguée au bureau" onerror="this.parentElement.style.background='#d8d4cd'">
+      <div class="image-caption">La surcharge humaine</div>
+    </div>
+
+    <p>
+      Regardez cette image. Une réceptionniste, casque sur les oreilles, les yeux posés sur un écran,
+      une fatigue discrète mais réelle qui s'installe. Elle fait son travail. Bien.
+      Mais elle se heurte chaque jour à quelque chose qu'aucune formation ne peut corriger :
+      <strong>elle est humaine.</strong>
+    </p>
+
+    <p>
+      Un être humain ne peut gérer qu'un appel à la fois. Il a besoin de sommeil.
+      Il peut se tromper sous la pression. Il se démotive. Il part en congé.
+      Il démissionne. Ce ne sont pas des défauts — ce sont des caractéristiques fondamentales
+      de l'espèce humaine.
+    </p>
+
+    <div class="stat-row">
+      <div class="stat">
+        <span class="stat-num">1</span>
+        <span class="stat-label">Appel à la fois</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">8h</span>
+        <span class="stat-label">De disponibilité max</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">40%</span>
+        <span class="stat-label">Du temps perdu en répétition</span>
+      </div>
+    </div>
+
+    <h2>Le piège de la répétition</h2>
+
+    <p>
+      La majorité des appels entrants dans un centre de contact sont structurellement identiques.
+      "Quels sont vos horaires ?", "Je veux suivre ma commande.", "Comment annuler ?",
+      "Pouvez-vous me transférer ?" — des dizaines de fois par jour, la même information
+      est transmise, le même script est exécuté.
+    </p>
+
+    <p>
+      C'est précisément là que l'humain est le plus vulnérable : dans la répétition.
+      La fatigue cognitive s'accumule, la qualité de service baisse en fin de journée,
+      les erreurs augmentent. Ce n'est pas une question de compétence.
+      C'est une question de biologie.
+    </p>
+
+    <div class="pull-quote">
+      <p>"L'ère où répondre au téléphone était un métier en soi est révolue. Ce qui commence, c'est l'ère où l'humain pilote la machine qui répond."</p>
+    </div>
+
+    <h2>Ce que l'IA change concrètement</h2>
+
+    <p>
+      Un agent vocal IA ne dort pas. Il gère simultanément 50, 100, 500 appels.
+      Il ne se démotive pas à 17h. Il ne prend pas de pause.
+      Et surtout — il est cohérent : la 500ème réponse est aussi précise que la première.
+    </p>
+
+    <p>
+      Mais au-delà de la performance brute, ce qui est fondamental,
+      c'est le <strong>repositionnement humain</strong> que cela permet.
+      Quand la machine gère le flux entrant, la réceptionniste devient coordinatrice.
+      Elle supervise. Elle escalade les cas complexes. Elle humanise là où c'est nécessaire.
+      Elle passe d'exécutante à gestionnaire.
+    </p>
+
+    <div class="divider"></div>
+
+    <h2>L'humain au bon endroit</h2>
+
+    <p>
+      Le vrai enjeu n'est pas de remplacer l'humain. C'est de le placer là où il crée
+      une valeur irremplaçable : dans la décision, l'empathie complexe, la relation client
+      à forte valeur, la gestion des exceptions. Des tâches que l'IA ne peut pas —
+      et ne devrait pas — prétendre maîtriser.
+    </p>
+
+    <p>
+      Ce modèle — IA pour le volume, humain pour la valeur — est celui que nous
+      déployons chez <strong>RoehAI</strong> avec nos agents vocaux.
+      Les entreprises qui l'adoptent ne réduisent pas leur équipe.
+      Elles la réorientent vers ce qui compte vraiment.
+    </p>
+
+    <div class="cta-block">
+      <strong>La question n'est plus "l'IA va-t-elle remplacer mes équipes ?"</strong>
+      <p>
+        Elle est : "Comment mes équipes vont-elles piloter l'IA pour servir mieux,
+        plus vite, et à plus grande échelle ?" Si votre centre d'appels traite encore
+        100 % de son volume manuellement, vous accumulez du retard — et de la fatigue.
+      </p>
+    </div>
+
+    <div class="footer-tags">
+      <span>#IntelligenceArtificielle</span>
+      <span>#AgentVocal</span>
+      <span>#Automatisation</span>
+      <span>#RoehAI</span>
+      <span>#FutureOfWork</span>
+      <span>#CentreAppels</span>
+      <span>#Entrepreneuriat</span>
+    </div>
+
+    <div class="article-footer">
+      <a href="../index.html" class="back-link">← Retour au portfolio</a>
+      <div class="author-note">Publié par Phineas · 2026</div>
+    </div>
+
+  </div>
+
+</body>
+</html>

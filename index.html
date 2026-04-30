@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phineas — Entrepreneur & Fondateur</title>
+  <meta name="description" content="Entrepreneur basé entre Kinshasa et Montréal. Fondateur de PayBridge, RoehTrajet et RoehAI.">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #FAF9F7;
+      --bg-alt: #F5F3EF;
+      --noir: #1A1A1A;
+      --accent: #C96442;
+      --gris: #6B6660;
+      --ligne: #E5E2DC;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--noir);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--ligne);
+      padding: 0 48px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--noir);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gris);
+      text-decoration: none;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 140px 48px 100px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 36px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: var(--noir);
+      max-width: 700px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--gris);
+      max-width: 540px;
+      line-height: 1.8;
+      margin-bottom: 48px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+    }
+
+    .hero-cta:hover { opacity: 0.7; }
+
+    .hero-cta::after { content: '↓'; }
+
+    /* ─── DIVIDER ─── */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--ligne);
+      margin: 0;
+    }
+
+    /* ─── SECTION GÉNÉRIQUE ─── */
+    .section {
+      padding: 96px 48px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    /* ─── À PROPOS ─── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .about-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--noir);
+      margin-bottom: 28px;
+    }
+
+    .about-text {
+      font-size: 0.975rem;
+      color: #3A3630;
+      margin-bottom: 20px;
+      line-height: 1.85;
+    }
+
+    .about-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding-top: 8px;
+    }
+
+    .meta-item {
+      border-top: 1px solid var(--ligne);
+      padding-top: 18px;
+    }
+
+    .meta-label {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: 4px;
+    }
+
+    .meta-value {
+      font-size: 0.95rem;
+      color: var(--noir);
+      font-weight: 400;
+    }
+
+    /* ─── ENTREPRISES ─── */
+    .ventures-bg {
+      background: var(--bg-alt);
+      border-top: 1px solid var(--ligne);
+      border-bottom: 1px solid var(--ligne);
+    }
+
+    .ventures-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--ligne);
+      border: 1px solid var(--ligne);
+      margin-top: 12px;
+    }
+
+    .venture-card {
+      background: var(--bg-alt);
+      padding: 44px 36px;
+      position: relative;
+      transition: background 0.25s;
+    }
+
+    .venture-card:hover { background: var(--bg); }
+
+    .venture-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--ligne);
+      line-height: 1;
+      margin-bottom: 28px;
+      display: block;
+    }
+
+    .venture-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--noir);
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .venture-category {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .venture-desc {
+      font-size: 0.9rem;
+      color: var(--gris);
+      line-height: 1.75;
+    }
+
+    .venture-tag {
+      display: inline-block;
+      margin-top: 24px;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gris);
+      border: 1px solid var(--ligne);
+      padding: 5px 12px;
+    }
+
+    /* ─── ARTICLES ─── */
+    .articles-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .article-item {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      align-items: center;
+      gap: 36px;
+      padding: 36px 0;
+      border-bottom: 1px solid var(--ligne);
+      text-decoration: none;
+      color: inherit;
+      transition: opacity 0.2s;
+    }
+
+    .article-item:first-child { border-top: 1px solid var(--ligne); }
+
+    .article-item:hover { opacity: 0.6; }
+
+    .article-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--ligne);
+      line-height: 1;
+    }
+
+    .article-meta {}
+
+    .article-cat {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .article-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--noir);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .article-excerpt {
+      font-size: 0.875rem;
+      color: var(--gris);
+      line-height: 1.6;
+    }
+
+    .article-arrow {
+      font-size: 1.2rem;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ─── CONTACT ─── */
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--noir);
+      margin-bottom: 20px;
+    }
+
+    .contact-sub {
+      font-size: 0.95rem;
+      color: var(--gris);
+      line-height: 1.8;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--ligne);
+      text-decoration: none;
+      color: var(--noir);
+      font-size: 0.95rem;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+
+    .contact-link:first-child { border-top: 1px solid var(--ligne); }
+
+    .contact-link:hover { color: var(--accent); }
+
+    .contact-link-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gris);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--ligne);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--noir);
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--gris);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { gap: 20px; }
+
+      .hero { padding: 100px 20px 64px; }
+      .section { padding: 64px 20px; }
+
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .ventures-grid { grid-template-columns: 1fr; }
+      .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+
+      .article-item {
+        grid-template-columns: 48px 1fr auto;
+        gap: 20px;
+      }
+
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+      .article-num { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Phineas</a>
+    <ul class="nav-links">
+      <li><a href="#ventures">Ventures</a></li>
+      <li><a href="#articles">Articles</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-tag">Entrepreneur · Kinshasa & Montréal</div>
+    <h1>Bâtir des infrastructures pour l'<em>Afrique de demain.</em></h1>
+    <p class="hero-sub">
+      Je construis des entreprises à l'intersection de la technologie et des marchés émergents —
+      du transfert d'argent à l'intelligence artificielle.
+    </p>
+    <a href="#ventures" class="hero-cta">Découvrir mes projets</a>
+  </header>
+
+  <hr class="section-divider">
+
+  <!-- À PROPOS -->
+  <section class="section" id="about">
+    <div class="section-label">À propos</div>
+    <div class="about-grid">
+      <div>
+        <h2 class="about-title">Construire à la frontière entre deux mondes.</h2>
+        <p class="about-text">
+          Entrepreneur basé entre Kinshasa et Montréal, je travaille à résoudre des problèmes
+          structurels dans des marchés où l'impact est réel et mesurable.
+        </p>
+        <p class="about-text">
+          Mes projets adressent trois domaines : les transferts d'argent diaspora-Afrique,
+          la mobilité urbaine à Kinshasa, et l'automatisation par intelligence artificielle
+          pour les entreprises africaines.
+        </p>
+        <p class="about-text">
+          Je crois que la prochaine décennie sera celle où l'Afrique construit ses propres
+          infrastructures numériques — et je veux en faire partie.
+        </p>
+      </div>
+      <div class="about-meta">
+        <div class="meta-item">
+          <div class="meta-label">Localisation</div>
+          <div class="meta-value">Kinshasa, RDC · Montréal, Canada</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Domaines</div>
+          <div class="meta-value">Fintech · Mobilité · Intelligence Artificielle</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Marchés cibles</div>
+          <div class="meta-value">RDC · Diaspora africaine en Amérique du Nord</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Ventures actives</div>
+          <div class="meta-value">PayBridge · RoehTrajet · RoehAI</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- VENTURES -->
+  <div class="ventures-bg">
+    <section class="section" id="ventures">
+      <div class="section-label">Mes entreprises</div>
+      <div class="ventures-grid">
+
+        <div class="venture-card">
+          <span class="venture-number">01</span>
+          <div class="venture-category">Fintech · Transfert d'argent</div>
+          <h3 class="venture-name">PayBridge</h3>
+          <p class="venture-desc">
+            Faciliter les transferts d'argent entre la diaspora congolaise au Canada
+            et leurs familles en RDC. Rapidité, transparence et frais réduits pour
+            les corridors souvent mal desservis.
+          </p>
+          <span class="venture-tag">Canada → RDC</span>
+        </div>
+
+        <div class="venture-card">
+          <span class="venture-number">02</span>
+          <div class="venture-category">Mobilité · Transport urbain</div>
+          <h3 class="venture-name">RoehTrajet</h3>
+          <p class="venture-desc">
+            Une plateforme de covoiturage urbain pensée pour Kinshasa —
+            adaptée à la réalité du trafic, des paiements et des habitudes
+            de déplacement de la capitale congolaise.
+          </p>
+          <span class="venture-tag">Kinshasa, RDC</span>
+        </div>
+
+        <div class="venture-card">
+          <span class="venture-number">03</span>
+          <div class="venture-category">Intelligence Artificielle · Automatisation</div>
+          <h3 class="venture-name">RoehAI</h3>
+          <p class="venture-desc">
+            Des agents IA sur mesure pour automatiser les opérations d'entreprise :
+            agents vocaux, gestion des appels entrants, workflows intelligents —
+            l'IA comme levier de productivité.
+          </p>
+          <span class="venture-tag">Kinshasa & Montréal</span>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ARTICLES -->
+  <section class="section" id="articles">
+    <div class="section-label">Articles</div>
+    <div class="articles-list">
+
+      <a href="articles/receptionniste-ia.html" class="article-item">
+        <span class="article-num">01</span>
+        <div class="article-meta">
+          <div class="article-cat">Intelligence Artificielle &amp; Entreprise</div>
+          <div class="article-title">La réceptionniste humaine a atteint ses limites naturelles.</div>
+          <div class="article-excerpt">
+            Ce n'est pas une critique — c'est une réalité biologique, économique et organisationnelle
+            que l'IA vient désormais résoudre.
+          </div>
+        </div>
+        <span class="article-arrow">→</span>
+      </a>
+
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="section-label">Contact</div>
+    <div class="contact-inner">
+      <div>
+        <h2 class="contact-title">Construisons quelque chose ensemble.</h2>
+        <p class="contact-sub">
+          Vous êtes investisseur, partenaire potentiel, ou simplement curieux de mes projets —
+          je suis disponible pour échanger.
+        </p>
+      </div>
+      <div class="contact-links">
+        <a href="https://linkedin.com" class="contact-link" target="_blank" rel="noopener">
+          <span class="contact-link-label">LinkedIn</span>
+          <span>Phineas →</span>
+        </a>
+        <a href="mailto:contact@roeh.ai" class="contact-link">
+          <span class="contact-link-label">Email</span>
+          <span>contact@roeh.ai →</span>
+        </a>
+        <a href="https://github.com/Phineas17" class="contact-link" target="_blank" rel="noopener">
+          <span class="contact-link-label">GitHub</span>
+          <span>Phineas17 →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-name">Phineas</span>
+    <span class="footer-copy">© 2026 · Kinshasa & Montréal</span>
+  </footer>
+
+</body>
+</html>
