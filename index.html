@@ -482,9 +482,23 @@
     }
 
     /* ─── FOOTER ─── */
+    .footer-wrapper {
+      display: flex;
+      justify-content: center;
+      padding: 32px 32px 24px;
+    }
+
     footer {
-      border-top: 1px solid var(--ligne);
-      padding: 32px 48px;
+      width: 100%;
+      max-width: 900px;
+      background: rgba(250, 249, 247, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(229, 226, 220, 0.8);
+      border-radius: 999px;
+      box-shadow: 0 4px 24px rgba(26, 26, 20, 0.06);
+      padding: 0 28px;
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -492,7 +506,7 @@
 
     .footer-name {
       font-family: 'Playfair Display', serif;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 700;
       color: var(--noir);
     }
@@ -521,7 +535,8 @@
         gap: 20px;
       }
 
-      footer { flex-direction: column; gap: 12px; text-align: center; }
+      footer { height: auto; padding: 14px 24px; border-radius: 24px; }
+      .footer-wrapper { padding: 24px 16px 20px; }
     }
 
     @media (max-width: 480px) {
@@ -724,10 +739,12 @@
   </section>
 
   <!-- FOOTER -->
-  <footer>
-    <span class="footer-name">Phineas</span>
-    <span class="footer-copy">© 2026 · Kinshasa & Montréal</span>
-  </footer>
+  <div class="footer-wrapper">
+    <footer>
+      <span class="footer-name">Phineas</span>
+      <span class="footer-copy">© 2026 · Kinshasa & Montréal</span>
+    </footer>
+  </div>
 
 </body>
 </html>
