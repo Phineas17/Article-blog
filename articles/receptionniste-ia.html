@@ -30,17 +30,23 @@
     /* ─── NAV ─── */
     nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 64px);
+      max-width: 900px;
       z-index: 100;
-      background: var(--bg);
-      border-bottom: 1px solid var(--ligne);
-      padding: 0 48px;
-      height: 60px;
+      background: rgba(250, 249, 247, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(229, 226, 220, 0.8);
+      border-radius: 999px;
+      padding: 0 28px;
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      box-shadow: 0 4px 24px rgba(26, 26, 20, 0.06);
     }
 
     .nav-back {
@@ -77,7 +83,7 @@
     .wrapper {
       max-width: 720px;
       margin: 0 auto;
-      padding: 100px 48px 80px;
+      padding: 120px 48px 80px;
     }
 
     .tag {
@@ -305,9 +311,9 @@
     }
 
     @media (max-width: 600px) {
-      nav { padding: 0 20px; }
+      nav { width: calc(100% - 32px); padding: 0 20px; }
       .nav-section { display: none; }
-      .wrapper { padding: 90px 20px 60px; }
+      .wrapper { padding: 110px 20px 60px; }
       .stat-row { grid-template-columns: 1fr; }
       .article-footer { flex-direction: column; gap: 16px; align-items: flex-start; }
     }
