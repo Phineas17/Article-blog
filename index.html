@@ -321,6 +321,46 @@
       padding: 5px 12px;
     }
 
+    .venture-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 28px;
+    }
+
+    .venture-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 9px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .venture-link:hover { opacity: 0.8; }
+
+    .venture-link-disabled {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--gris);
+      border: 1px solid var(--ligne);
+      padding: 9px 18px;
+      border-radius: 999px;
+      cursor: default;
+    }
+
     /* ─── ARTICLES ─── */
     .articles-list {
       display: flex;
@@ -572,7 +612,10 @@
             et leurs familles en RDC. Rapidité, transparence et frais réduits pour
             les corridors souvent mal desservis.
           </p>
-          <span class="venture-tag">Canada → RDC</span>
+          <div class="venture-footer">
+            <span class="venture-tag">Canada → RDC</span>
+            <span class="venture-link-disabled">Bientôt</span>
+          </div>
         </div>
 
         <div class="venture-card">
@@ -584,7 +627,10 @@
             adaptée à la réalité du trafic, des paiements et des habitudes
             de déplacement de la capitale congolaise.
           </p>
-          <span class="venture-tag">Kinshasa, RDC</span>
+          <div class="venture-footer">
+            <span class="venture-tag">Kinshasa, RDC</span>
+            <a href="https://www.roehtrajet.com" target="_blank" rel="noopener" class="venture-link">Visiter →</a>
+          </div>
         </div>
 
         <div class="venture-card">
@@ -596,7 +642,10 @@
             agents vocaux, gestion des appels entrants et workflows intelligents.
             L'IA comme levier de productivité.
           </p>
-          <span class="venture-tag">Kinshasa & Montréal</span>
+          <div class="venture-footer">
+            <span class="venture-tag">Kinshasa & Montréal</span>
+            <a href="https://www.roehai.com" target="_blank" rel="noopener" class="venture-link">Visiter →</a>
+          </div>
         </div>
 
         <div class="venture-card">
@@ -608,7 +657,10 @@
             et de toucher des clients partout en RDC. La logistique est gérée par
             la filiale Kedo Delivery pour des livraisons fiables sur tout le territoire.
           </p>
-          <span class="venture-tag">RDC</span>
+          <div class="venture-footer">
+            <span class="venture-tag">RDC</span>
+            <a href="https://www.kedomarket.com" target="_blank" rel="noopener" class="venture-link">Visiter →</a>
+          </div>
         </div>
 
       </div>
