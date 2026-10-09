@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents vocaux full-duplex : parler en même temps ne suffit pas</title>
+  <meta name="description" content="Les agents vocaux full-duplex écoutent et parlent en même temps, mais leur gestion des tours reste plus lente et complexe que celle des humains.">
+  <meta name="author" content="Phineas Roeh">
+  <style>
+    :root { --bg:#FAF9F7; --ink:#1A1A1A; --accent:#C96442; --muted:#6B6660; --line:#E5E2DC; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:Arial,sans-serif; line-height:1.8; }
+    nav { position:sticky; top:0; z-index:2; display:flex; justify-content:space-between; padding:18px 6%; background:rgba(250,249,247,.94); border-bottom:1px solid var(--line); }
+    nav a { color:var(--ink); text-decoration:none; }
+    .logo { font-weight:700; }
+    main { max-width:780px; margin:0 auto; padding:72px 24px; }
+    .tag { color:var(--accent); text-transform:uppercase; letter-spacing:.14em; font-size:.75rem; font-weight:700; }
+    h1,h2,h3 { line-height:1.2; }
+    h1 { font-family:Georgia,serif; font-size:clamp(2.2rem,6vw,4rem); margin:20px 0; }
+    h2 { font-family:Georgia,serif; margin-top:52px; font-size:1.8rem; }
+    h3 { margin-top:30px; }
+    .intro { color:var(--muted); font-size:1.15rem; border-left:3px solid var(--accent); padding-left:18px; }
+    a { color:#9b452b; }
+    li { margin:12px 0; }
+    .box { background:#1A1A1A; color:#FAF9F7; padding:28px; margin:36px 0; }
+    .sources { border-top:1px solid var(--line); margin-top:60px; padding-top:20px; }
+    footer { margin-top:60px; padding-top:24px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="logo" href="../index.html">Phineas Roeh</a>
+    <a href="../index.html">Retour aux articles</a>
+  </nav>
+
+  <main>
+    <div class="tag">IA vocale · Full-duplex · Latence</div>
+    <h1>Agents vocaux full-duplex : parler en même temps ne suffit pas</h1>
+
+    <p class="intro">Un agent vocal peut écouter pendant qu'il parle et rester malgré tout moins naturel qu'un humain. Le véritable défi se trouve dans l'anticipation des tours, les interruptions et l'influence réciproque entre les interlocuteurs.</p>
+
+    <p>Les agents vocaux full-duplex sont conçus pour écouter et produire de la parole simultanément. Cette architecture promet des conversations plus fluides, des interruptions naturelles et moins de silences. Pourtant, deux nouvelles prépublications montrent que le full-duplex ne résout pas automatiquement la gestion du rythme conversationnel.</p>
+
+    <p>Pour une entreprise, ce détail est important. Un client ne juge pas seulement la vitesse technique du modèle. Il remarque surtout les silences trop longs, les réponses qui commencent au mauvais moment, les interruptions inutiles et les moments où l'agent semble attendre mécaniquement la fin complète d'une phrase.</p>
+
+    <h2>Les modèles réagissent encore après la fin du tour</h2>
+
+    <p>La prépublication <a href="https://arxiv.org/abs/2610.08683">Coupled but Late</a>, soumise le 6 octobre 2026, analyse deux instances de PersonaPlex-7B échangeant directement des flux audio. Les auteurs comparent leur comportement avec des conversations humaines issues de Switchboard.</p>
+
+    <p>Le résultat principal concerne le transfert de parole. Dans les dialogues étudiés, les modèles changent de tour avec une médiane située entre 400 et 560 millisecondes, contre 137 millisecondes pour les humains. Les auteurs observent aussi que les modèles exploitent très peu les derniers instants de la phrase pour anticiper la fin du tour.</p>
+
+    <p>Cette différence suggère un comportement réactif. Le modèle attend de percevoir la fin de la parole, puis commence à préparer sa réponse. Les humains font souvent l'inverse : ils utilisent le vocabulaire, l'intonation et la structure de la phrase pour prévoir quand leur interlocuteur va terminer.</p>
+
+    <p>L'étude reste une prépublication en révision. Elle porte sur deux instances d'un même modèle et ne prouve pas que tous les agents full-duplex suivent exactement le même schéma. Elle fournit néanmoins un test précis que les équipes de production peuvent reproduire.</p>
+
+    <h2>Une conversation doit être évaluée comme un système à deux acteurs</h2>
+
+    <p>La prépublication <a href="https://arxiv.org/abs/2610.08125">Conversation Is a Two-Body Problem</a>, également soumise le 6 octobre 2026, critique les évaluations où un agent répond à des fichiers audio préenregistrés ou à un examinateur qui suit toujours le même script.</p>
+
+    <p>Dans une conversation réelle, chaque interlocuteur modifie le comportement de l'autre. Une interruption de l'agent peut pousser le client à parler plus vite. Un silence prolongé peut provoquer une répétition. Une réponse hésitante peut encourager le client à reformuler. Mesurer un seul côté ne capture donc pas toute la dynamique.</p>
+
+    <p>Les auteurs proposent DyaFDB, un cadre où deux modèles conversent directement sous des rôles coopératifs ou conflictuels. Leur protocole comprend quatre tâches, 140 scénarios et 7 560 conversations couvrant six combinaisons de modèles. Les deux participants sont ensuite évalués par un juge externe.</p>
+
+    <p>Cette méthode est encore expérimentale. Les scénarios et protocoles doivent être publiés, et une conversation entre deux modèles ne reproduit pas parfaitement un appel humain. Son apport reste important : un agent vocal doit être évalué sur la manière dont il influence la conversation, pas uniquement sur ses réponses isolées.</p>
+
+    <h2>Ce que cela change pour les agences d'agents vocaux</h2>
+
+    <p>Une agence sérieuse doit mesurer la latence conversationnelle avec plus de précision que le simple temps de réponse du serveur. Les indicateurs utiles comprennent :</p>
+
+    <ul>
+      <li>le délai entre la fin réelle de la parole et le premier audio de l'agent ;</li>
+      <li>la fréquence des réponses lancées trop tôt ou trop tard ;</li>
+      <li>le nombre d'interruptions provoquées par de courts acquiescements comme « oui » ou « d'accord » ;</li>
+      <li>le délai nécessaire pour arrêter la synthèse lorsqu'un client reprend la parole ;</li>
+      <li>le nombre de répétitions ou de reformulations provoquées par le comportement de l'agent ;</li>
+      <li>la réussite finale de la tâche après plusieurs tours.</li>
+    </ul>
+
+    <div class="box">
+      <strong>La meilleure latence n'est pas toujours la plus courte.</strong>
+      <p>Un agent qui répond en 300 millisecondes mais coupe régulièrement le client peut sembler moins naturel qu'un agent légèrement plus lent qui anticipe correctement le moment de parler.</p>
+    </div>
+
+    <h2>Ce que RoehAI peut tester ou adapter</h2>
+
+    <p>Pour <a href="https://roehai.com">RoehAI</a>, la première expérience consiste à enregistrer 100 échanges courts contenant des fins de phrases prévisibles, des hésitations, des silences internes et des acquiescements. L'objectif est de mesurer le délai de transfert de parole et les interruptions incorrectes.</p>
+
+    <p>La deuxième expérience consiste à comparer trois politiques : attendre un silence fixe, utiliser une détection de fin de tour et combiner cette détection avec le contexte linguistique. Les mesures doivent inclure la médiane, le p95, les faux départs et les répétitions du client.</p>
+
+    <p>La troisième expérience consiste à faire converser deux agents RoehAI dans des scénarios de prise de rendez-vous, de modification et d'annulation. Un juge externe peut ensuite noter les deux côtés : respect du rôle, exactitude des informations, fluidité et état final du calendrier.</p>
+
+    <p>Ces essais peuvent être déclinés par langue et par secteur. Le français québécois, les accents congolais et les environnements bruyants doivent être évalués séparément. Une politique de fin de tour efficace dans un bureau calme peut échouer dans un garage ou un restaurant.</p>
+
+    <h2>FAQ</h2>
+
+    <h3>Qu'est-ce qu'un agent vocal full-duplex ?</h3>
+    <p>C'est un agent capable d'écouter pendant qu'il produit de la parole, ce qui permet des interruptions et des réactions plus naturelles.</p>
+
+    <h3>Une latence plus faible rend-elle toujours l'agent meilleur ?</h3>
+    <p>Non. Une réponse très rapide peut couper le client. Il faut mesurer ensemble la vitesse, le bon moment de prise de parole et la réussite de la tâche.</p>
+
+    <h3>Ces résultats sont-ils prêts pour la production ?</h3>
+    <p>Non. Les deux travaux sont des prépublications. Leurs principes sont utiles pour construire des tests, mais les chiffres doivent être reproduits sur la stack RoehAI.</p>
+
+    <h2>Conclusion</h2>
+
+    <p>Le full-duplex constitue une avancée importante, mais il ne garantit pas une conversation humaine. Les modèles doivent apprendre à prévoir la fin d'un tour, respecter les hésitations et adapter leur comportement aux réactions du client.</p>
+
+    <p>Les entreprises qui choisissent un agent vocal devraient demander des mesures de transfert de parole, d'interruption et de réussite finale. RoehAI peut utiliser ces recherches pour renforcer ses tests par langue, par secteur et par intégration métier, sans présenter des résultats de laboratoire comme des performances déjà garanties.</p>
+
+    <p><a href="https://roehai.com">Découvrez RoehAI</a> pour déployer des agents vocaux adaptés aux appels réels de votre entreprise.</p>
+
+    <h2>Sources et références</h2>
+    <div class="sources">
+      <p><strong>Coupled but Late: Turn-Taking Between Full-Duplex Speech Models in Unscripted Dialogue</strong><br>
+      Lichen Zhu, Yueqian Lin, Yiheng Wang, Hai Li et Yiran Chen. 6 octobre 2026. Prépublication en révision.<br>
+      <a href="https://arxiv.org/abs/2610.08683">Lire la publication originale</a></p>
+
+      <p><strong>Conversation Is a Two-Body Problem: Dyadic Evaluation of Full-Duplex Dialogue Models</strong><br>
+      Sungnyun Kim, Sungwoo Cho, Jihwan Oh et Se-Young Yun. 6 octobre 2026. Prépublication.<br>
+      <a href="https://arxiv.org/abs/2610.08125">Lire la publication originale</a></p>
+    </div>
+
+    <footer>
+      Note : cet article repose sur deux prépublications. Les méthodes proposées sont pertinentes pour l'évaluation, mais doivent être validées sur des appels RoehAI avant toute généralisation.
+    </footer>
+  </main>
+</body>
+</html>
