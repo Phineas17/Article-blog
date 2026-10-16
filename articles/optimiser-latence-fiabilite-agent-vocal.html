@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agents vocaux : trois optimisations pour réduire la latence</title>
+<meta name="description" content="Trois recherches récentes montrent comment réduire la latence, le coût et les erreurs des agents vocaux grâce au matériel, au streaming et au tokenizer.">
+<meta name="author" content="Phineas Roeh">
+<meta name="robots" content="index, follow">
+<style>
+:root{--bg:#FAF9F7;--ink:#1A1A1A;--accent:#C96442;--muted:#6B6660;--line:#E5E2DC}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;line-height:1.8}
+nav{display:flex;justify-content:space-between;padding:18px 6%;border-bottom:1px solid var(--line)}nav a{color:var(--ink);text-decoration:none}.logo{font-weight:700}
+main{max-width:780px;margin:0 auto;padding:72px 24px}.tag{color:var(--accent);text-transform:uppercase;letter-spacing:.14em;font-size:.75rem;font-weight:700}
+h1,h2,h3{line-height:1.2}h1{font-family:Georgia,serif;font-size:clamp(2.2rem,6vw,4rem);margin:20px 0}h2{font-family:Georgia,serif;margin-top:52px;font-size:1.8rem}h3{margin-top:30px}
+.intro{color:var(--muted);font-size:1.15rem;border-left:3px solid var(--accent);padding-left:18px}a{color:#9b452b}li{margin:12px 0}
+.box{background:#1A1A1A;color:#FAF9F7;padding:28px;margin:36px 0}.sources{border-top:1px solid var(--line);margin-top:60px;padding-top:20px}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<nav><a class="logo" href="../index.html">Phineas Roeh</a><a href="../index.html">Retour aux articles</a></nav>
+<main>
+<div class="tag">IA vocale · Latence · Fiabilité</div>
+<h1>Agents vocaux : trois optimisations pour réduire la latence</h1>
+
+<p class="intro">La vitesse d'un agent vocal ne dépend pas seulement du modèle choisi. La tokenisation, la normalisation du texte et l'adaptation au matériel peuvent aussi modifier le temps de réponse, le coût et la fiabilité.</p>
+
+<p>Lorsqu'un client appelle une entreprise, le système doit reconnaître la parole, comprendre la demande, appeler un outil et répondre sans créer de silence gênant. Une partie de la latence peut pourtant apparaître avant même que le modèle commence son raisonnement.</p>
+
+<p>Trois prépublications soumises le 14 octobre 2026 étudient ces contraintes de production : appels réels, matériel limité, texte ASR en streaming et longues sessions conversationnelles.</p>
+
+<h2>Un petit modèle adapté aux appels peut rivaliser avec un grand modèle</h2>
+
+<p>La recherche <a href="https://arxiv.org/abs/2610.19382">ixi-sLM</a> décrit un modèle de 1,2 milliard de paramètres conçu pour un agent d'appel utilisé par plusieurs millions d'abonnés. Les auteurs adaptent le vocabulaire, le tokenizer et la précision du modèle aux appels téléphoniques coréens.</p>
+
+<p>Le vocabulaire est réduit selon la fréquence des tokens dans les appels. Le tokenizer est adapté aux formulations de la téléphonie, ce qui réduit le nombre de tokens de 18 %. Une quantification mixte, calibrée sur des appels réels, permet ensuite l'exécution sur des NPU Qualcomm et Apple.</p>
+
+<p>Dans leur expérimentation, le modèle occupe 803 MiB, soit 28 % de la taille FP16. Il atteint 94 % de la qualité pondérée d'un grand modèle cloud. Sur le NPU étudié, la latence et l'énergie sont respectivement réduites à 22 % et 23 % des mesures CPU. L'étude rapporte aussi une température sous le seuil de limitation pendant une exécution prolongée. genui{"citation":{"ref":"turn41view0"}}</p>
+
+<p>Ce résultat ne signifie pas qu'un modèle coréen peut être installé directement chez RoehAI. Il montre qu'une adaptation à la distribution réelle des appels peut être plus utile qu'une simple réduction générale de taille.</p>
+
+<h2>La normalisation en streaming protège les dates et les numéros</h2>
+
+<p>La prépublication <a href="https://arxiv.org/abs/2610.19492">Towards Efficient Simultaneous Inverse Text Normalization</a> traite la transformation de la sortie orale de l'ASR en texte structuré pendant que le client parle.</p>
+
+<p>Un agent doit convertir « mardi à quatorze heures trente » en une forme exploitable par un calendrier. Il doit aussi distinguer un numéro, un montant, une adresse ou un nom propre. Les systèmes classiques associent souvent un modèle neuronal et des règles écrites à la main, ce qui devient difficile à maintenir lorsqu'il faut ajouter des domaines et des langues.</p>
+
+<p>Les auteurs proposent un modèle texte vers texte adapté au streaming, avec une politique Read-Tag-Write. Le système lit une portion, identifie la transformation, puis écrit la sortie sans attendre toute la phrase. Les expériences sur des données vietnamiennes indiquent une précision comparable aux systèmes non streaming, supérieure aux méthodes hybrides testées, avec une latence compatible avec le temps réel. genui{"citation":{"ref":"turn42view0"}}</p>
+
+<p>La limite est importante : l'étude porte sur le vietnamien. Les règles du français québécois, du français congolais et des noms propres de chaque secteur doivent être évaluées séparément.</p>
+
+<h2>Le tokenizer peut devenir un goulot d'étranglement</h2>
+
+<p><a href="https://arxiv.org/abs/2610.19801">Delta Tokenizer</a> observe que les agents renvoient souvent la même conversation au modèle à chaque tour. Le cache KV évite de recalculer une partie du préfixe, mais le tokenizer peut continuer à relire tout le texte depuis le début.</p>
+
+<p>La méthode conserve les tokens précédents et ne recalcule que le texte ajouté, avec une courte zone de sécurité. Les auteurs rapportent un gain d'environ 40 fois pour la tokenisation incrémentale par rapport au tokenizer de référence Hugging Face.</p>
+
+<p>Dans SGLang, le prototype réduit de 59 % le TTFT médian d'une interface avec 100 000 tokens. Sous charge, le p99 des sessions d'agents diminue jusqu'à 9,5 fois, et jusqu'à 23 fois lorsque de longues requêtes occupent le front-end CPU. Les sorties vérifiées correspondent au tokenizer de référence. genui{"citation":{"ref":"turn42view1"}}</p>
+
+<div class="box"><strong>La latence doit être mesurée par couche.</strong><p>Il faut distinguer le transport, l'ASR, la normalisation, la tokenisation, le premier token, l'outil et le premier audio TTS.</p></div>
+
+<h2>Ce que cela change pour les agences d'agents vocaux</h2>
+
+<p>Une agence sérieuse doit tester la chaîne complète, pas uniquement comparer des modèles sur une phrase isolée. Les gains d'un benchmark général peuvent disparaître lorsqu'un agent reçoit un historique long, des reformulations et des appels d'outils.</p>
+
+<ul>
+<li>Mesurer le TTFT et le temps avant le premier audio sur des sessions courtes et longues.</li>
+<li>Évaluer séparément les dates, heures, montants, numéros et noms propres.</li>
+<li>Comparer les résultats par langue, accent, secteur et niveau de bruit.</li>
+<li>Mesurer les p50, p95 et p99, ainsi que les abandons pendant les silences.</li>
+<li>Vérifier l'état final d'une réservation avant de déclarer l'appel réussi.</li>
+</ul>
+
+<p>La normalisation doit rester vérifiable. Une transformation automatique ne devrait pas modifier un champ sensible sans confirmation lorsque l'ASR est incertain.</p>
+
+<h2>Ce que RoehAI peut tester ou adapter</h2>
+
+<h3>1. Instrumenter chaque étape</h3>
+<p>Ajouter dans les journaux les temps ASR, normalisation, tokenisation, premier token, premier audio, outil et réponse finale. Comparer les résultats sur 100 appels réels et sur des conversations longues.</p>
+
+<h3>2. Créer un jeu de tests de normalisation</h3>
+<p>Préparer des phrases en français québécois et en français congolais contenant des dates, horaires, montants, noms, adresses et numéros. Comparer la sortie brute de l'ASR, la sortie normalisée et l'argument envoyé à l'outil.</p>
+
+<h3>3. Tester le cache et la mémoire</h3>
+<p>Rejouer des conversations avec un historique croissant. Vérifier si la tokenisation, le cache KV et la génération ralentissent séparément. Une optimisation ne doit pas modifier le contenu compris par l'agent.</p>
+
+<h2>FAQ</h2>
+
+<h3>Faut-il remplacer immédiatement la stack de RoehAI ?</h3>
+<p>Non. Ces travaux proposent des pistes. Il faut d'abord mesurer où se trouve le vrai goulot d'étranglement.</p>
+
+<h3>Ces recherches sont-elles prêtes pour la production ?</h3>
+<p>Non. Elles sont récentes et expérimentales. ixi-sLM dispose toutefois d'un résultat de déploiement réel, tandis que les deux autres travaux nécessitent une reproduction indépendante.</p>
+
+<h3>Pourquoi la normalisation est-elle importante ?</h3>
+<p>Une erreur sur une date, une heure ou un numéro peut produire une mauvaise action même si la conversation semble naturelle.</p>
+
+<h2>Conclusion</h2>
+
+<p>Les progrès importants ne viennent pas toujours d'un modèle plus grand. Une adaptation au domaine, une normalisation en streaming et une tokenisation incrémentale peuvent améliorer la réactivité et la fiabilité d'un agent vocal.</p>
+
+<p>RoehAI peut utiliser ces recherches pour guider ses mesures, ses tests par langue et ses optimisations d'infrastructure. Découvrez <a href="https://roehai.com">les agents vocaux RoehAI</a> pour automatiser les appels, les rendez-vous et les demandes clients.</p>
+
+<h2>Sources et références</h2>
+<div class="sources">
+<p><strong>ixi-sLM: On-Device sLM for AI Call Agent Service</strong><br>
+Han-Sang Lee, Kyuho Lee, Juneyoung Park et collaborateurs. 14 octobre 2026. Prépublication arXiv.<br>
+<a href="https://arxiv.org/abs/2610.19382">Lire la publication originale</a></p>
+
+<p><strong>Towards Efficient Simultaneous Inverse Text Normalization with Pretrained Text-to-Text Language Model and Read-Tag-Write Policy</strong><br>
+Kiet Anh Hoang, Khanh Le, Bao Nguyen et collaborateurs. 14 octobre 2026. Prépublication arXiv, article long Interspeech 2026.<br>
+<a href="https://arxiv.org/abs/2610.19492">Lire la publication originale</a></p>
+
+<p><strong>Delta Tokenizer: Reference-Identical Tokenization of Session Deltas and Segment-Parallelism for Long Prompts on Multicore CPUs</strong><br>
+Zhenyu Zhang et Zhichao Cao. 14 octobre 2026. Prépublication arXiv.<br>
+<a href="https://arxiv.org/abs/2610.19801">Lire la publication originale</a></p>
+</div>
+
+<footer>Note : cet article repose sur trois prépublications. ixi-sLM rapporte un déploiement réel, mais son évaluation reste centrée sur deux services coréens et 100 appels. Les deux autres méthodes doivent être reproduites sur la stack RoehAI.</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Créer la voix d'un agent IA avec des instructions textuelles</title>
+  <meta name="description" content="VoTSpeech montre comment décrire une voix par texte. Découvrez les tests nécessaires avant d'utiliser cette approche dans un agent vocal.">
+  <meta name="author" content="Phineas Roeh">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Créer la voix d'un agent IA avec des instructions textuelles">
+  <meta property="og:description" content="Une recherche sépare la conception d'une voix de la génération du message. Voici les tests nécessaires avant la production.">
+  <style>
+    :root { --bg:#FAF9F7; --ink:#1A1A1A; --accent:#C96442; --muted:#6B6660; --line:#E5E2DC; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:Arial,sans-serif; line-height:1.8; }
+    nav { position:sticky; top:0; z-index:2; display:flex; justify-content:space-between; padding:18px 6%; background:rgba(250,249,247,.94); border-bottom:1px solid var(--line); }
+    nav a { color:var(--ink); text-decoration:none; }
+    .logo { font-weight:700; }
+    main { max-width:780px; margin:0 auto; padding:72px 24px; }
+    .tag { color:var(--accent); text-transform:uppercase; letter-spacing:.14em; font-size:.75rem; font-weight:700; }
+    h1,h2,h3 { line-height:1.2; }
+    h1 { font-family:Georgia,serif; font-size:clamp(2.2rem,6vw,4rem); margin:20px 0; }
+    h2 { font-family:Georgia,serif; margin-top:52px; font-size:1.8rem; }
+    h3 { margin-top:30px; }
+    .intro { color:var(--muted); font-size:1.15rem; border-left:3px solid var(--accent); padding-left:18px; }
+    a { color:#9b452b; }
+    li { margin:12px 0; }
+    .box { background:#1A1A1A; color:#FAF9F7; padding:28px; margin:36px 0; }
+    .box a { color:#F1A083; }
+    .sources { border-top:1px solid var(--line); margin-top:60px; padding-top:20px; }
+    footer { margin-top:60px; padding-top:24px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="logo" href="../index.html">Phineas Roeh</a>
+    <a href="../index.html">Retour aux articles</a>
+  </nav>
+  <main>
+    <div class="tag">IA vocale · Synthèse vocale · Personnalisation</div>
+    <h1>Créer la voix d'un agent IA avec des instructions textuelles</h1>
+
+    <p class="intro">Choisir une voix naturelle ne suffit pas. Une entreprise doit aussi contrôler son rythme, son ton, son expressivité et sa cohérence. Une nouvelle prépublication propose de concevoir ces caractéristiques avant de générer la phrase.</p>
+
+    <p>Les agents vocaux utilisent généralement une voix sélectionnée dans un catalogue ou reproduite à partir d'un extrait audio. Cette méthode fonctionne, mais elle donne peu de contrôle précis sur la façon dont la voix doit représenter une marque, un secteur ou une situation.</p>
+
+    <p>Une clinique peut vouloir une voix calme et rassurante. Un garage peut préférer une voix directe et énergique. Un restaurant peut avoir besoin d'un ton chaleureux, avec une prononciation fiable des noms de plats. Dans chaque cas, la voix doit rester intelligible pendant tout l'appel.</p>
+
+    <h2>Une étape distincte pour concevoir la voix</h2>
+
+    <p>La prépublication <a href="https://arxiv.org/abs/2610.14694">VoTSpeech</a>, soumise le 10 octobre 2026, sépare deux opérations souvent mélangées : définir la voix souhaitée et générer le message parlé. Le système reçoit une description en langage naturel, puis construit une représentation intermédiaire avant de synthétiser le texte.</p>
+
+    <p>Cette représentation, appelée latent vocal, contient des informations sur l'identité perçue du locuteur et sur des caractéristiques acoustiques dynamiques. Elle guide ensuite la planification de la prosodie et la génération acoustique. Le modèle doit donc comprendre comment il doit parler avant de produire la phrase.</p>
+
+    <p>Les auteurs ont entraîné leur adaptation sur 1 543,52 heures de parole chinoise. Sur InstructTTSEval-ZH, VoTSpeech obtient 78,5 % sur les descriptions de style, 66,9 % sur les scénarios de rôle et un taux d'erreur de caractères de 2,58 %. Dans la comparaison publiée, il dépasse plusieurs modèles ouverts sur le respect du style et le jeu de rôle, mais pas sur tous les critères.</p>
+
+    <h2>Pourquoi cette approche intéresse les agents vocaux</h2>
+
+    <p>Pour une agence, l'intérêt principal consiste à séparer la personnalité vocale de la réponse métier. Cette séparation pourrait faciliter la création de profils adaptés à une marque tout en conservant le même moteur conversationnel.</p>
+
+    <p>Une instruction pourrait préciser le débit, la chaleur, l'énergie ou le registre attendu. L'agent pourrait aussi adapter son style à une situation, par exemple ralentir lorsqu'il confirme un numéro ou adopter un ton neutre lors d'une annulation.</p>
+
+    <p>L'approche facilite aussi les tests. Au lieu de comparer des voix par leur nom commercial, une équipe peut définir un cahier des charges : débit moyen, intelligibilité des chiffres, stabilité du timbre, prononciation des noms locaux et perception du ton.</p>
+
+    <div class="box">
+      <strong>Une voix de marque doit être testée comme un composant de production.</strong>
+      <p>Elle doit rester compréhensible au téléphone, respecter les instructions et conserver le même comportement dans les situations importantes.</p>
+    </div>
+
+    <h2>Des limites importantes avant toute utilisation commerciale</h2>
+
+    <p>VoTSpeech reste une prépublication de cinq pages. Son évaluation principale concerne le chinois, pas le français québécois, le français congolais, le lingala ou le swahili. Les résultats ne prouvent donc pas que la méthode conserverait les mêmes performances dans les langues utiles à RoehAI.</p>
+
+    <p>L'évaluation subjective repose sur 24 auditeurs et 10 extraits choisis aléatoirement par système. Cet échantillon donne un premier signal, mais il reste limité pour établir une qualité constante sur de longs appels. Une partie de l'évaluation automatique utilise aussi Gemini 2.5 Pro comme juge, ce qui doit être complété par des évaluateurs humains.</p>
+
+    <p>Le modèle contient environ 2 milliards de paramètres et nécessite un GPU compatible CUDA. Surtout, ses poids sont distribués sous licence CC BY-NC 4.0, qui interdit l'utilisation commerciale. Le <a href="https://github.com/ywbn/VoTSpeech">code d'inférence officiel</a> est sous licence Apache 2.0, mais le modèle doit rester un outil de recherche et d'évaluation.</p>
+
+    <h2>Ce que cela change pour les agences d'agents vocaux</h2>
+
+    <p>Une agence sérieuse doit transformer une préférence subjective en critères vérifiables. Dire qu'une voix est professionnelle ou naturelle ne suffit pas. Il faut expliquer comment elle a été choisie et comment sa qualité est surveillée.</p>
+
+    <ul>
+      <li>Définir un profil vocal par secteur, langue et type d'appel.</li>
+      <li>Mesurer l'intelligibilité des noms, dates, heures, adresses et numéros.</li>
+      <li>Tester le respect du ton demandé sur plusieurs minutes.</li>
+      <li>Évaluer les sorties sur le canal téléphonique, pas uniquement avec un casque.</li>
+      <li>Vérifier les licences, les consentements et les risques d'imitation.</li>
+    </ul>
+
+    <p>La personnalisation ne doit jamais réduire la fiabilité. Une voix expressive qui déforme un numéro ou accélère pendant une confirmation reste inadaptée à la production.</p>
+
+    <h2>Ce que RoehAI peut tester ou adapter</h2>
+
+    <h3>1. Construire trois profils vocaux mesurables</h3>
+    <p>RoehAI peut rédiger trois descriptions pour un garage, une clinique et un restaurant. Chaque profil préciserait le rythme, le ton, l'énergie et la manière de confirmer les informations critiques. Les mêmes scripts seraient générés par la solution actuelle et par VoTSpeech dans un environnement de recherche.</p>
+
+    <h3>2. Évaluer le français et le téléphone</h3>
+    <p>Un panel de locuteurs québécois et congolais peut noter 50 phrases par profil. Les critères seraient l'intelligibilité, le naturel, le respect de l'instruction et la confiance perçue. Les audios doivent aussi être compressés avec les codecs téléphoniques réellement utilisés.</p>
+
+    <h3>3. Mesurer le coût opérationnel</h3>
+    <p>L'équipe peut mesurer le temps avant le premier audio, le facteur temps réel, la mémoire GPU et la stabilité sur des réponses longues. Les poids interdisant l'usage commercial, ce test servirait à valider le principe et à orienter le choix d'une technologie compatible.</p>
+
+    <h2>FAQ</h2>
+
+    <h3>Peut-on utiliser VoTSpeech dans un agent commercial ?</h3>
+    <p>Non. Les poids sont sous licence CC BY-NC 4.0. Ils servent à la recherche non commerciale.</p>
+
+    <h3>Le modèle fonctionne-t-il en français ?</h3>
+    <p>La publication évalue principalement le chinois. Le français et les accents utiles à RoehAI doivent être testés séparément.</p>
+
+    <h3>Pourquoi séparer la voix du texte prononcé ?</h3>
+    <p>Cette séparation permet de définir le style vocal, puis de vérifier si la synthèse le respecte sans perdre en intelligibilité.</p>
+
+    <h2>Conclusion</h2>
+
+    <p>VoTSpeech apporte surtout une méthode intéressante : concevoir explicitement la voix avant de générer la parole. Pour les agences, cette idée encourage des profils vocaux mesurables, des tests humains par langue et une vérification rigoureuse des licences.</p>
+
+    <p>RoehAI peut étudier ce principe pour améliorer ses choix de voix par secteur et par marché, sans présenter une prépublication chinoise comme une capacité déjà disponible. Découvrez <a href="https://roehai.com">les agents vocaux RoehAI</a> pour les appels, les rendez-vous et les intégrations métier.</p>
+
+    <h2>Sources et références</h2>
+    <div class="sources">
+      <p><strong>VoTSpeech: Decoupling Voice Design from Speech Generation in Instruction-Following TTS</strong><br>
+      Wenbing Yang, Qihang Lu, Zihan Sun, Peilei Jia, Yingming Gao, Ya Li et Jun Gao. 10 octobre 2026. Prépublication arXiv.<br>
+      <a href="https://arxiv.org/abs/2610.14694">Lire la publication originale</a></p>
+
+      <p><strong>VoTSpeech, code d'inférence</strong><br>
+      Équipe VoTSpeech. Consulté le 14 octobre 2026. Dépôt GitHub, code Apache 2.0, poids CC BY-NC 4.0.<br>
+      <a href="https://github.com/ywbn/VoTSpeech">Consulter le dépôt officiel</a></p>
+
+      <p><strong>VoTSpeech Model Weights</strong><br>
+      Équipe VoTSpeech. Consulté le 14 octobre 2026. Modèle de recherche non commercial.<br>
+      <a href="https://huggingface.co/Ywbn16/VoTSpeech">Consulter la fiche du modèle</a></p>
+    </div>
+
+    <footer>
+      Note : cet article repose sur une prépublication et un modèle de recherche non commercial. Aucun résultat mature ou évalué par les pairs n'est présenté comme prêt pour la production.
+    </footer>
+  </main>
+</body>
+</html>
