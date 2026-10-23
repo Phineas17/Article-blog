@@ -78,6 +78,25 @@
 
     .nav-links a:hover { color: var(--accent); }
 
+    .nav-articles-button {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-articles-button:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
     /* ─── HERO ─── */
     .hero-wrapper {
       position: relative;
@@ -552,6 +571,7 @@
       <li><a href="#articles">Articles</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <a href="#articles" class="nav-articles-button">Voir les articles</a>
   </nav>
 
   <!-- HERO -->
@@ -688,6 +708,71 @@
   <section class="section" id="articles">
     <div class="section-label">Articles</div>
     <div class="articles-list">
+
+      <a href="articles/fiabilite-mots-rares-agents-vocaux.html" class="article-item">
+        <span class="article-num">06</span>
+        <div class="article-meta">
+          <div class="article-cat">IA vocale · ASR · Synthèse vocale</div>
+          <div class="article-title">Agents vocaux : mieux reconnaître et prononcer les mots rares.</div>
+          <div class="article-excerpt">
+            Deux recherches proposent de mieux traiter les noms, marques et termes métier
+            afin de renforcer la fiabilité des appels.
+          </div>
+        </div>
+        <span class="article-arrow">→</span>
+      </a>
+
+      <a href="articles/optimiser-latence-fiabilite-agent-vocal.html" class="article-item">
+        <span class="article-num">05</span>
+        <div class="article-meta">
+          <div class="article-cat">IA vocale · Latence · Fiabilité</div>
+          <div class="article-title">Agents vocaux : trois optimisations pour réduire la latence.</div>
+          <div class="article-excerpt">
+            Le tokenizer, la normalisation et l'adaptation au matériel peuvent améliorer
+            la vitesse et la fiabilité d'un agent vocal.
+          </div>
+        </div>
+        <span class="article-arrow">→</span>
+      </a>
+
+      <a href="articles/concevoir-voix-agent-ia-par-texte.html" class="article-item">
+        <span class="article-num">04</span>
+        <div class="article-meta">
+          <div class="article-cat">IA vocale · Synthèse · Personnalisation</div>
+          <div class="article-title">Créer la voix d'un agent IA avec des instructions textuelles.</div>
+          <div class="article-excerpt">
+            VoTSpeech sépare la conception de la voix de la génération du message.
+            Voici les tests et limites à connaître avant la production.
+          </div>
+        </div>
+        <span class="article-arrow">→</span>
+      </a>
+
+      <a href="articles/agents-vocaux-full-duplex-temps-de-parole.html" class="article-item">
+        <span class="article-num">03</span>
+        <div class="article-meta">
+          <div class="article-cat">IA vocale · Full-duplex · Latence</div>
+          <div class="article-title">Agents vocaux full-duplex : parler en même temps ne suffit pas.</div>
+          <div class="article-excerpt">
+            Les agents écoutent et parlent simultanément, mais leur transfert de parole reste
+            plus lent que celui des humains et demande de nouveaux tests.
+          </div>
+        </div>
+        <span class="article-arrow">→</span>
+      </a>
+
+      <a href="articles/evaluer-agents-vocaux-reussite-tache.html" class="article-item">
+        <span class="article-num">02</span>
+        <div class="article-meta">
+          <div class="article-cat">IA vocale · Évaluation · Fiabilité</div>
+          <div class="article-title">Agents vocaux : pourquoi le taux de réussite compte plus que le WER.</div>
+          <div class="article-excerpt">
+            Une transcription peut sembler correcte tout en faisant échouer une action importante.
+            Voici comment mesurer la fiabilité réelle d'un agent vocal.
+          </div>
+        </div>
+        <span class="article-arrow">→</span>
+      </a>
 
       <a href="articles/receptionniste-ia.html" class="article-item">
         <span class="article-num">01</span>

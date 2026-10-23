@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agents vocaux : mieux reconnaître et prononcer les mots rares</title>
+<meta name="description" content="Deux recherches montrent comment mieux reconnaître et prononcer les noms, marques et termes rares afin de rendre les agents vocaux plus fiables.">
+<meta name="author" content="Phineas Roeh">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agents vocaux : mieux reconnaître et prononcer les mots rares">
+<meta property="og:description" content="Les noms, marques et termes métier restent difficiles pour les agents vocaux. Voici les méthodes et tests utiles avant la production.">
+<style>
+:root{--bg:#FAF9F7;--ink:#1A1A1A;--accent:#C96442;--muted:#6B6660;--line:#E5E2DC}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;line-height:1.8}
+nav{display:flex;justify-content:space-between;padding:18px 6%;border-bottom:1px solid var(--line)}nav a{color:var(--ink);text-decoration:none}.logo{font-weight:700}
+main{max-width:780px;margin:0 auto;padding:72px 24px}.tag{color:var(--accent);text-transform:uppercase;letter-spacing:.14em;font-size:.75rem;font-weight:700}
+h1,h2,h3{line-height:1.2}h1{font-family:Georgia,serif;font-size:clamp(2.2rem,6vw,4rem);margin:20px 0}h2{font-family:Georgia,serif;margin-top:52px;font-size:1.8rem}h3{margin-top:30px}
+.intro{color:var(--muted);font-size:1.15rem;border-left:3px solid var(--accent);padding-left:18px}a{color:#9b452b}li{margin:12px 0}
+.box{background:#1A1A1A;color:#FAF9F7;padding:28px;margin:36px 0}.sources{border-top:1px solid var(--line);margin-top:60px;padding-top:20px}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<nav><a class="logo" href="../index.html">Phineas Roeh</a><a href="../index.html">Retour aux articles</a></nav>
+<main>
+<div class="tag">IA vocale · ASR · Synthèse vocale</div>
+<h1>Agents vocaux : mieux reconnaître et prononcer les mots rares</h1>
+
+<p class="intro">Un agent vocal peut tenir une conversation naturelle et échouer sur le détail le plus important : le nom du client, une marque, un médicament, une rue ou un terme propre au métier.</p>
+
+<p>Ces erreurs touchent les deux directions de la conversation. La reconnaissance vocale peut remplacer un nom rare par un mot familier qui lui ressemble. La synthèse vocale peut ensuite prononcer incorrectement un terme que le texte contient pourtant sans erreur.</p>
+
+<p>Deux prépublications récentes proposent des méthodes complémentaires. PronCFT cherche à mieux reconnaître les mots inconnus à partir de leur prononciation. Pronouncing Hard Words ajoute un contrôle phonétique à un modèle conversationnel de synthèse vocale.</p>
+
+<h2>Pourquoi les mots rares restent difficiles</h2>
+
+<p>Les modèles apprennent surtout à partir des mots présents dans leurs données. Lorsqu'un nom est absent ou très rare, le système peut privilégier une forme connue. Un nom comme « Mukilu », une marque locale ou une adresse peut alors être remplacé par un mot plus fréquent.</p>
+
+<p>Cette erreur est plus grave qu'une faute de ponctuation. Elle peut créer un dossier au mauvais nom, envoyer un SMS à la mauvaise personne ou enregistrer une mauvaise information dans le CRM.</p>
+
+<p>Le problème existe aussi lorsque l'agent parle. Une prononciation incorrecte d'un nom, d'un médicament ou d'une marque peut réduire la confiance du client, même si le reste de la réponse est exact.</p>
+
+<h2>PronCFT apprend à vérifier le son avant de choisir l'orthographe</h2>
+
+<p>La prépublication <a href="https://arxiv.org/abs/2610.25766">PronCFT</a>, soumise le 19 octobre 2026, étudie le biais contextuel des systèmes ASR fondés sur un grand modèle de langage.</p>
+
+<p>Donner une liste de noms possibles au modèle ne suffit pas toujours. Le modèle peut sélectionner un candidat parce qu'il apparaît dans le contexte, sans vérifier si sa prononciation correspond réellement à l'audio.</p>
+
+<p>PronCFT entraîne le modèle à transcrire d'abord la parole en phonèmes, à comparer ces phonèmes avec les candidats, puis à produire l'orthographe correspondante. Pendant l'entraînement, les auteurs modifient certaines orthographes tout en conservant leur prononciation. Cette stratégie réduit la tentation de choisir simplement la forme la plus familière.</p>
+
+<p>Sur un jeu de test de mots hors vocabulaire filtré depuis des benchmarks ouverts, la version finale fait passer le rappel de 59,89 % à 83,57 %, soit une amélioration de 23,68 points. Des tests avec des phonèmes incorrects suggèrent que le gain vient bien du contenu phonétique et pas seulement de la présence d'une annotation.</p>
+
+<p>La publication reste courte, avec cinq pages, une figure et six tableaux. Elle ne démontre pas encore les mêmes gains sur les accents québécois, congolais ou sur les appels téléphoniques compressés.</p>
+
+<h2>Contrôler la prononciation sans réentraîner tout le modèle TTS</h2>
+
+<p>La prépublication <a href="https://arxiv.org/abs/2610.24164">Pronouncing Hard Words</a>, soumise le 16 octobre 2026, ajoute un contrôle phonétique à un modèle TTS conversationnel existant.</p>
+
+<p>Les auteurs étendent le vocabulaire avec ARPAbet, poursuivent un entraînement supervisé enrichi en phonèmes et ajoutent un biais acoustique au moment de l'inférence. Aucun nom de médicament utilisé pendant l'évaluation n'apparaît dans les étapes d'entraînement.</p>
+
+<p>Sur une évaluation clinique de 7 500 extraits, le score automatique de prononciation correcte passe de 54,6 % sans augmentation phonétique à 90,7 %. Dans une étude humaine aveugle et randomisée, les auditeurs jugent 84 % des extraits corrects, contre 82 % pour la meilleure référence. Les intervalles de confiance se chevauchent sur le sous-ensemble comparé.</p>
+
+<p>Cette différence entre l'évaluation automatique et humaine est importante. Le juge automatique est utile pour tester beaucoup de fichiers, mais il ne doit pas remplacer une validation humaine. Sur 250 extraits appariés, l'accord entre Gemini et la majorité humaine atteint 84,8 %, avec un kappa de 0,57.</p>
+
+<div class="box"><strong>La fiabilité d'un agent vocal dépend des entités critiques.</strong><p>Un bon score moyen ne suffit pas si le système échoue sur les noms, les adresses, les produits et les termes qui déclenchent une action.</p></div>
+
+<h2>Ce que cela change pour les agences d'agents vocaux</h2>
+
+<p>Une agence sérieuse doit maintenir un lexique vivant pour chaque client et chaque secteur. Ce lexique peut contenir les employés, services, produits, villes, rues, marques, fournisseurs et mots propres au métier.</p>
+
+<p>Il faut ensuite tester séparément la reconnaissance et la prononciation. Un terme peut être reconnu correctement, mais mal prononcé. L'inverse est également possible.</p>
+
+<ul>
+<li>Mesurer le rappel des entités rares, pas seulement le WER global.</li>
+<li>Comparer l'orthographe reconnue avec l'identité réelle du client.</li>
+<li>Évaluer la prononciation après compression téléphonique.</li>
+<li>Tester les variantes d'accent et les formulations spontanées.</li>
+<li>Demander une confirmation lorsque le nom déclenche une action sensible.</li>
+</ul>
+
+<p>Les résultats doivent être suivis par langue, secteur et client. Une configuration efficace pour une clinique ne sera pas automatiquement adaptée à un garage ou à un restaurant.</p>
+
+<h2>Ce que RoehAI peut tester ou adapter</h2>
+
+<h3>1. Construire un test de 300 entités</h3>
+
+<p>RoehAI peut sélectionner 100 noms de personnes, 100 noms de lieux et 100 termes métier provenant de scénarios consentis ou synthétiques. Chaque élément devrait être enregistré avec plusieurs voix et plusieurs niveaux de bruit.</p>
+
+<h3>2. Ajouter un lexique phonétique par entreprise</h3>
+
+<p>Pour chaque client, RoehAI peut conserver l'orthographe, la prononciation attendue, les variantes fréquentes et le type d'entité. Ce lexique pourrait alimenter l'ASR, la validation des arguments et le TTS.</p>
+
+<h3>3. Sécuriser les actions liées aux noms</h3>
+
+<p>Lorsqu'une entité reste ambiguë, l'agent peut épeler le nom ou demander une confirmation avant de modifier un calendrier, un dossier client ou un numéro de téléphone.</p>
+
+<h2>FAQ</h2>
+
+<h3>Pourquoi un agent remplace-t-il un nom rare par un mot connu ?</h3>
+<p>Le modèle privilégie souvent les formes fréquentes apprises pendant son entraînement, surtout lorsque l'audio est bruité ou ambigu.</p>
+
+<h3>Une liste de noms suffit-elle pour corriger l'ASR ?</h3>
+<p>Pas toujours. PronCFT montre que le modèle doit aussi vérifier si la prononciation du candidat correspond réellement à l'audio.</p>
+
+<h3>Ces méthodes sont-elles prêtes pour RoehAI ?</h3>
+<p>Non. Elles restent expérimentales et doivent être reproduites en français québécois, en français congolais et sur les secteurs ciblés.</p>
+
+<h2>Conclusion</h2>
+
+<p>Les mots rares sont une petite partie du vocabulaire, mais ils portent souvent l'information la plus importante d'un appel. Les reconnaître et les prononcer correctement améliore la confiance, la qualité des données et la sécurité des actions.</p>
+
+<p>RoehAI peut utiliser ces recherches pour renforcer ses lexiques par entreprise, ses tests multilingues et ses règles de confirmation. Découvrez <a href="https://roehai.com">les agents vocaux RoehAI</a> pour automatiser les appels et les rendez-vous avec une configuration adaptée au métier.</p>
+
+<h2>Sources et références</h2>
+<div class="sources">
+<p><strong>PronCFT: Pronunciation Contextual Fine-Tuning for Contextual Biasing of Out-of-Vocabulary Words in LLM-Based ASR</strong><br>
+Yifan Xu, Kaixun Huang, Mengzhe Geng et collaborateurs. 19 octobre 2026. Prépublication arXiv.<br>
+<a href="https://arxiv.org/abs/2610.25766">Lire la publication originale</a></p>
+
+<p><strong>Pronouncing Hard Words: Phoneme Adaptation of a Pretrained Conversational Text to Speech Model</strong><br>
+Yashish M. Siriwardena, Dinesh K. Gnanasekaran, Tanmay Laud et collaborateurs. 16 octobre 2026. Prépublication arXiv.<br>
+<a href="https://arxiv.org/abs/2610.24164">Lire la publication originale</a></p>
+</div>
+
+<footer>Note : cet article repose sur deux prépublications. Les résultats sont prometteurs, mais ils doivent être reproduits sur les langues, accents, codecs et secteurs utilisés par RoehAI.</footer>
+</main>
+</body>
+</html>

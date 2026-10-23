@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents vocaux : pourquoi le taux de réussite compte plus que le WER</title>
+  <meta name="description" content="Les recherches récentes montrent pourquoi les agents vocaux doivent être évalués sur la réussite des tâches, la latence et la fiabilité des actions.">
+  <meta name="author" content="Phineas Roeh">
+  <style>
+    :root { --bg:#FAF9F7; --ink:#1A1A1A; --accent:#C96442; --muted:#6B6660; --line:#E5E2DC; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:Arial,sans-serif; line-height:1.8; }
+    nav { position:sticky; top:0; z-index:2; display:flex; justify-content:space-between; padding:18px 6%; background:rgba(250,249,247,.94); border-bottom:1px solid var(--line); }
+    nav a { color:var(--ink); text-decoration:none; }
+    .logo { font-weight:700; }
+    main { max-width:780px; margin:0 auto; padding:72px 24px; }
+    .tag { color:var(--accent); text-transform:uppercase; letter-spacing:.14em; font-size:.75rem; font-weight:700; }
+    h1,h2 { line-height:1.2; }
+    h1 { font-family:Georgia,serif; font-size:clamp(2.2rem,6vw,4rem); margin:20px 0; }
+    h2 { font-family:Georgia,serif; margin-top:52px; font-size:1.8rem; }
+    .intro { color:var(--muted); font-size:1.15rem; border-left:3px solid var(--accent); padding-left:18px; }
+    a { color:#9b452b; }
+    li { margin:12px 0; }
+    .box { background:#1A1A1A; color:#FAF9F7; padding:28px; margin:36px 0; }
+    .box a { color:#F1A083; }
+    .sources { border-top:1px solid var(--line); margin-top:60px; padding-top:20px; }
+    footer { margin-top:60px; padding-top:24px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="logo" href="../index.html">Phineas Roeh</a>
+    <a href="../index.html">Retour aux articles</a>
+  </nav>
+
+  <main>
+    <div class="tag">IA vocale · Évaluation · Fiabilité</div>
+    <h1>Agents vocaux : pourquoi le taux de réussite compte plus que le WER</h1>
+    <p class="intro">Une transcription peut sembler correcte tout en faisant échouer une action importante. Les recherches récentes invitent les agences à mesurer ce que l'agent réussit réellement à accomplir.</p>
+
+    <p>Lorsqu'une entreprise évalue son agent vocal, elle commence souvent par le taux d'erreur de transcription, appelé WER. Cette métrique reste utile, mais elle ne répond pas à la question la plus importante : l'agent a-t-il compris les informations nécessaires pour réaliser la tâche demandée ?</p>
+
+    <p>Cette distinction devient essentielle lorsqu'un appel contient un nom propre, une date, une adresse, un numéro de téléphone ou une consigne à transmettre à un outil. Une seule erreur sur un champ critique peut provoquer une mauvaise réservation, un mauvais SMS ou une action destinée au mauvais client.</p>
+
+    <h2>Une évaluation plus proche de la réalité</h2>
+
+    <p>La prépublication <a href="https://arxiv.org/abs/2609.38867">Talk2Agent</a>, publiée le 30 septembre 2026, propose d'évaluer les interfaces vocales selon l'information conservée pour l'agent, plutôt que selon la transcription seule. Les auteurs construisent des versions parlées de tâches issues de benchmarks d'agents informatiques, puis vérifient si les intentions et les éléments importants sont toujours présents après le passage par la voix.</p>
+
+    <p>Le benchmark contient 31,82 heures de parole humaine issues de tâches en ligne de commande et d'interfaces graphiques. Dans leurs expériences, la mesure orientée vers la tâche corrèle mieux avec la réussite de l'agent que le WER et le CER. Les auteurs rapportent une amélioration de corrélation de 0,246 par rapport à ces métriques lexicales sur leur protocole.</p>
+
+    <p>Le résultat ne signifie pas que le WER doit être abandonné. Il montre plutôt qu'il faut ajouter des indicateurs métier : date reconnue, numéro conservé, client identifié, outil approprié et état final correct.</p>
+
+    <h2>La latence ne se résume pas au temps de réponse</h2>
+
+    <p>La prépublication <a href="https://arxiv.org/abs/2609.20995">Voice-Light</a> étudie un agent vocal en duplex intégral, capable d'écouter pendant qu'il prépare une réponse. Le système combine détection de fin de tour, génération spéculative privée, lecture réversible et exécution concurrente des outils.</p>
+
+    <p>Dans leur étude de cas instrumentée, les auteurs mesurent une médiane de 758 millisecondes entre la fin détectée de la parole et le premier audio serveur. Toutefois, cette mesure repose sur 36 tours répartis dans trois sessions non scénarisées. Elle ne constitue donc pas une preuve suffisante pour promettre le même résultat dans tous les environnements de production.</p>
+
+    <p>L'idée la plus utile pour une agence est architecturale : pendant qu'un outil vérifie une disponibilité, l'agent peut préparer une courte phrase d'attente. Mais l'audio provisoire doit pouvoir être annulé lorsqu'une interruption survient. Sinon, l'agent risque de conserver dans l'historique une réponse que le client n'a jamais réellement entendue.</p>
+
+    <h2>Ce que cela change pour les agences d'agents vocaux</h2>
+
+    <p>Une agence sérieuse ne devrait pas présenter uniquement un taux de transcription général. Elle devrait publier une grille de test par secteur et par langue, avec des scénarios réels et des critères d'échec clairement définis.</p>
+
+    <ul>
+      <li>Mesurer séparément la compréhension de l'intention et l'exactitude des arguments.</li>
+      <li>Tester les dates, montants, noms, codes et numéros dans des conditions bruyantes.</li>
+      <li>Mesurer le temps avant le premier audio, la latence des outils et le délai d'arrêt après interruption.</li>
+      <li>Vérifier l'état final d'une réservation ou d'une modification avant de considérer l'appel comme réussi.</li>
+      <li>Comparer les résultats par langue, accent, secteur et type de téléphone.</li>
+    </ul>
+
+    <div class="box">
+      <strong>Le bon indicateur n'est pas seulement : « Qu'a transcrit l'agent ? »</strong>
+      <p>La question opérationnelle est : « A-t-il conservé les informations nécessaires pour effectuer la bonne action, au bon moment, avec la bonne confirmation ? »</p>
+    </div>
+
+    <h2>Ce que RoehAI peut tester ou adapter</h2>
+
+    <p>Pour <a href="https://roehai.com">RoehAI</a>, ces recherches suggèrent trois expérimentations concrètes. Premièrement, créer un jeu de tests vocal pour les garages, restaurants et entreprises de services, avec des réservations contenant des dates, heures, noms et numéros.</p>
+
+    <p>Deuxièmement, ajouter dans les journaux les champs <code>latence_premier_audio</code>, <code>latence_outil</code>, <code>argument_correct</code>, <code>confirmation_obtenue</code> et <code>etat_final</code>. Troisièmement, tester une phrase d'attente courte pendant les appels d'outils, puis mesurer si elle réduit les abandons sans augmenter les interruptions.</p>
+
+    <p>Une action sensible ne devrait jamais être exécutée uniquement parce qu'une transcription semble plausible. Lorsque l'agent doute d'un numéro, d'une date ou d'une identité, il doit demander une confirmation explicite. Cette règle améliore souvent la fiabilité plus rapidement qu'un changement complet de modèle.</p>
+
+    <h2>Conclusion</h2>
+
+    <p>Les travaux récents ne disent pas qu'une technologie unique résoudra tous les problèmes des agents vocaux. Ils montrent quelque chose de plus pratique : la qualité doit être mesurée au niveau de la tâche finale, pas seulement au niveau du texte produit.</p>
+
+    <p>Les entreprises qui choisissent un agent vocal devraient donc demander des tests reproductibles, des résultats par langue et une stratégie claire pour les outils et les interruptions. Chez RoehAI, cette capacité d'adaptation permet de transformer les progrès de la recherche en améliorations concrètes pour chaque secteur et chaque intégration métier.</p>
+
+    <p><a href="https://roehai.com">Découvrez les agents vocaux RoehAI</a> et voyez comment automatiser les appels, les rendez-vous et les demandes clients tout en gardant le contrôle sur les actions importantes.</p>
+
+    <h2>Sources et références</h2>
+    <div class="sources">
+      <p><strong>Talk2Agent: Benchmarking Voice Interfaces for Text Agents</strong><br>
+      Terumi Chiba, Guangzhi Sun, Zheqi Yuan et Chao Zhang. 30 septembre 2026. Prépublication.<br>
+      <a href="https://arxiv.org/abs/2609.38867">Lire la publication originale</a></p>
+
+      <p><strong>Voice-Light: A Full-Duplex Cascaded Voice Agent with Causal Turn-Taking and Speculative Generation</strong><br>
+      Bertil Braun. Septembre 2026. Prépublication et étude de cas instrumentée.<br>
+      <a href="https://arxiv.org/abs/2609.20995">Lire la publication originale</a></p>
+    </div>
+
+    <footer>
+      Note : cet article est principalement basé sur des prépublications. Les résultats doivent être validés sur des appels RoehAI avant toute généralisation commerciale.
+    </footer>
+  </main>
+</body>
+</html>
