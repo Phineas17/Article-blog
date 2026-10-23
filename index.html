@@ -78,6 +78,25 @@
 
     .nav-links a:hover { color: var(--accent); }
 
+    .nav-articles-button {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-articles-button:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
     /* ─── HERO ─── */
     .hero-wrapper {
       position: relative;
@@ -552,6 +571,7 @@
       <li><a href="#articles">Articles</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <a href="#articles" class="nav-articles-button">Voir les articles</a>
   </nav>
 
   <!-- HERO -->
