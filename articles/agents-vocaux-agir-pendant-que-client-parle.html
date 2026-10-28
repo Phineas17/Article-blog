@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agents vocaux : agir pendant que le client parle sans deviner</title>
+<meta name="description" content="Les recherches récentes montrent comment accélérer les appels d'outils et préserver la fiabilité des agents vocaux pendant les longues conversations.">
+<meta name="author" content="RoehAI">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://roehai.com/articles/agents-vocaux-agir-pendant-que-client-parle.html">
+<style>
+:root{--bg:#FAF9F7;--ink:#1A1A1A;--accent:#C96442;--muted:#6B6660;--line:#E5E2DC}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;line-height:1.8}
+nav{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;padding:18px 6%;background:rgba(250,249,247,.94);border-bottom:1px solid var(--line)}
+nav a{color:var(--ink);text-decoration:none}.logo{font-weight:700}
+main{max-width:780px;margin:0 auto;padding:64px 24px}.tag{color:var(--accent);text-transform:uppercase;letter-spacing:.14em;font-size:.75rem;font-weight:700}
+h1,h2,h3{line-height:1.2}h1{font-family:Georgia,serif;font-size:clamp(2.2rem,6vw,4rem);margin:20px 0}h2{font-family:Georgia,serif;margin-top:48px;font-size:1.8rem}h3{margin-top:28px}
+.intro{color:var(--muted);font-size:1.15rem;border-left:3px solid var(--accent);padding-left:18px}
+a{color:#9b452b}li{margin:10px 0}.box{background:#1A1A1A;color:#FAF9F7;padding:26px;margin:32px 0}.sources{border-top:1px solid var(--line);margin-top:54px;padding-top:18px}
+footer{margin-top:54px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<nav><a class="logo" href="../index.html">RoehAI</a><a href="../index.html#articles">Voir les articles</a></nav>
+<main>
+<div class="tag">IA vocale · Outils · Latence</div>
+<h1>Agents vocaux : agir pendant que le client parle sans deviner</h1>
+
+<p class="intro">Un agent vocal perd du temps lorsqu'il attend la fin complète d'une phrase avant de commencer une recherche. Il devient dangereux lorsqu'il agit trop tôt sur une information encore incertaine. Les recherches récentes étudient précisément ce compromis.</p>
+
+<p>Lorsqu'un client demande un rendez-vous, l'agent doit écouter, comprendre l'intention, extraire la date et appeler un calendrier. Dans une architecture classique, chaque étape attend la précédente. Le client termine sa phrase, l'ASR finalise la transcription, le modèle choisit l'outil, puis l'outil s'exécute.</p>
+
+<p>Cette séquence est simple à contrôler, mais elle ajoute du silence. Une stratégie plus rapide consiste à préparer certaines opérations pendant que le client parle. Le défi consiste alors à distinguer une information suffisamment claire pour commencer d'une hypothèse qui pourrait encore être corrigée.</p>
+
+<h2>Heard Enough to Act définit le moment où l'agent peut commencer</h2>
+
+<p>La prépublication <a href="https://arxiv.org/abs/2610.34653">Heard Enough to Act</a>, soumise le 26 octobre 2026, propose de marquer le premier instant où une demande orale contient assez d'informations pour appeler un outil.</p>
+
+<p>Les auteurs créent une collection de 26 694 dialogues, représentant 786 heures et 48 domaines. Le corpus indique notamment si l'agent connaît déjà l'outil et les arguments nécessaires, ou s'il doit continuer à écouter.</p>
+
+<p>Le modèle prend des décisions par morceaux de transcription. Dans les expériences publiées, le score macro-F1 de l'état de l'outil atteint 0,48 sur les dialogues de test et 0,47 sur un benchmark externe. Pour les appels corrects, l'avance moyenne sur une architecture qui attend la fin du tour est estimée entre 1,8 et 2 secondes dans le domaine, et à 1,1 seconde sur le benchmark externe.</p>
+
+<p>Ce résultat est intéressant pour les calendriers, les recherches de disponibilité et les CRM. Il ne signifie pas que l'agent doit exécuter chaque outil dès qu'il reconnaît un mot. Il doit d'abord vérifier que les champs nécessaires sont suffisamment stables.</p>
+
+<h2>Heartbeat Thinking conserve le travail commencé pendant les corrections</h2>
+
+<p>La recherche <a href="https://arxiv.org/abs/2610.26233">Heartbeat Thinking</a> étudie un problème fréquent : le client commence une phrase, se corrige, puis ajoute une précision. Les systèmes spéculatifs classiques peuvent interrompre une génération ou un appel dès qu'une nouvelle portion audio arrive.</p>
+
+<p>Heartbeat Thinking lance périodiquement une nouvelle réflexion sur la transcription partielle tout en laissant les raisonnements et les outils déjà engagés terminer leur travail. Les résultats sont conservés dans un état partagé. Ils peuvent ensuite compléter un argument manquant ou préparer un appel dépendant.</p>
+
+<p>Sur FDBench v3, les auteurs rapportent une hausse de 16 points de la couverture des outils et une réduction de 36,4 % de la latence moyenne de réponse finale. Ces chiffres restent liés à leur environnement expérimental. Une exécution anticipée peut produire un coût inutile ou une mauvaise action si elle n'est pas annulée ou validée après la fin de la phrase.</p>
+
+<div class="box"><strong>La vitesse doit rester réversible.</strong><p>Une recherche anticipée peut être lancée tôt. Une écriture irréversible, comme envoyer un SMS ou déplacer un rendez-vous, doit attendre la validation des arguments.</p></div>
+
+<h2>La fiabilité se dégrade aussi pendant les longues conversations</h2>
+
+<p>La prépublication <a href="https://arxiv.org/abs/2610.34991">Diagnosing and Mitigating Long-Session Degradation in Full-Duplex Speech Models</a>, soumise les 26 et 27 octobre 2026, analyse le comportement d'agents full-duplex pendant des sessions prolongées.</p>
+
+<p>Les auteurs observent une dégradation progressive de la réactivité, de la qualité du contenu parlé et de la constance de la voix. Ils proposent une adaptation LoRA et une architecture appelée Two-Resolution Context. Cette méthode conserve les interactions récentes en détail et compresse les interactions anciennes.</p>
+
+<p>Dans leurs expériences, l'adaptation LoRA améliore la stabilité sur des sessions de dix minutes. La méthode de contexte à deux résolutions réduit la croissance du cache KV de plus de 90 % dans les scénarios testés.</p>
+
+<p>Cette recherche est préliminaire, mais elle rappelle une réalité pratique : un agent qui fonctionne bien sur un appel de deux minutes peut se comporter différemment après plusieurs corrections, transferts et recherches. Les tests de RoehAI doivent donc inclure des conversations longues, pas uniquement des phrases isolées.</p>
+
+<h2>Ce que cela change pour les agences d'agents vocaux</h2>
+
+<p>Une agence sérieuse doit séparer les opérations réversibles des actions sensibles. Une recherche de disponibilité peut commencer avant la fin du tour. Une réservation, un SMS ou un appel sortant doit attendre que les champs critiques soient confirmés.</p>
+
+<ul>
+<li>Mesurer l'avance gagnée par rapport à une exécution après la fin du tour.</li>
+<li>Calculer le taux de recherches anticipées abandonnées après correction du client.</li>
+<li>Vérifier qu'une information provisoire ne déclenche jamais une écriture métier.</li>
+<li>Tester les conversations longues avec interruptions, hésitations et changements de date.</li>
+<li>Mesurer la latence, la qualité audio et la stabilité de la voix sur dix minutes ou plus.</li>
+</ul>
+
+<h2>Ce que RoehAI peut tester ou adapter</h2>
+
+<h3>1. Ajouter une validation d'état avant chaque outil</h3>
+<p>Chaque outil doit indiquer les champs requis, les champs provisoires et le niveau de confiance minimal. Les recherches peuvent être anticipées. Les actions irréversibles doivent être bloquées tant que les arguments ne sont pas confirmés.</p>
+
+<h3>2. Tester trois stratégies de latence</h3>
+<p>Comparer une exécution séquentielle, une préparation anticipée annulable et une préparation par étapes. Mesurer le temps avant le premier audio, le temps final, le coût d'outil et les erreurs évitées.</p>
+
+<h3>3. Créer des appels longs de référence</h3>
+<p>Préparer des scénarios de dix minutes avec changements, interruptions et demandes multiples. Vérifier si l'agent conserve la voix, les règles métier, la mémoire et l'état réel du calendrier.</p>
+
+<h2>FAQ</h2>
+
+<h3>Faut-il appeler un outil dès que l'agent entend une date ?</h3>
+<p>Non. Il faut vérifier que la demande est suffisamment complète et que la date n'est pas encore corrigée par le client.</p>
+
+<h3>La spéculation réduit-elle toujours les coûts ?</h3>
+<p>Non. Une recherche anticipée peut être inutile. Il faut mesurer les appels abandonnés et limiter la spéculation aux opérations peu coûteuses et réversibles.</p>
+
+<h3>Pourquoi tester les appels de dix minutes ?</h3>
+<p>Parce que la qualité, la voix, la mémoire et la réactivité peuvent se dégrader avec l'accumulation des tours.</p>
+
+<h2>Conclusion</h2>
+
+<p>Les agents vocaux peuvent gagner en rapidité en préparant les outils pendant l'écoute. Mais cette optimisation doit être accompagnée d'une validation des arguments, d'une annulation propre et de tests sur des conversations longues.</p>
+
+<p>RoehAI peut appliquer ces principes à ses agents pour les rendez-vous, les CRM, les SMS et les appels sortants, tout en adaptant les règles aux secteurs et aux langues. Découvrez <a href="https://roehai.com">les agents vocaux RoehAI</a> pour construire des automatisations plus rapides, contrôlables et adaptées aux appels réels.</p>
+
+<h2>Sources et références</h2>
+<div class="sources">
+<p><strong>Heard Enough to Act: Early Tool Calling in Spoken Dialogue Systems</strong><br>
+Yizhou Peng, Chen Chen, Donghang Wu, Hexin Liu et Eng Siong Chng. 26 octobre 2026. Prépublication soumise à ICASSP 2027.<br>
+<a href="https://arxiv.org/abs/2610.34653">Lire la publication originale</a></p>
+
+<p><strong>Heartbeat Thinking: Speculative Reasoning and Tool Execution While Listening in Realtime Voice Agents</strong><br>
+Zhenyu Zhang, Kewei Fu, Yongqi Tong et collaborateurs. 19 octobre 2026. Prépublication arXiv.<br>
+<a href="https://arxiv.org/abs/2610.26233">Lire la publication originale</a></p>
+
+<p><strong>Diagnosing and Mitigating Long-Session Degradation in Full-Duplex Speech Models</strong><br>
+Junho Kim, CheHyun Lee, Donghun Kang et collaborateurs. Version révisée le 27 octobre 2026. Prépublication arXiv.<br>
+<a href="https://arxiv.org/abs/2610.34991">Lire la publication originale</a></p>
+</div>
+
+<footer>Note : cet article repose sur trois prépublications. Les gains annoncés doivent être reproduits sur la stack, les langues, les secteurs et les intégrations de RoehAI avant toute adoption en production.</footer>
+</main>
+</body>
+</html>
