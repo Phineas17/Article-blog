@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents vocaux : réduire les interruptions et les silences</title>
+  <meta name="description" content="Un benchmark ouvert en 14 langues montre comment mesurer le moment où un agent vocal doit répondre sans couper la parole.">
+  <link rel="canonical" href="https://phineas17.github.io/Article-blog/articles/agents-vocaux-tour-de-parole-benchmark.html">
+  <style>
+    body{margin:0;background:#FAF9F7;color:#1A1A1A;font-family:Arial,sans-serif;line-height:1.75}
+    main{max-width:820px;margin:0 auto;padding:48px 22px}
+    h1,h2,h3{font-family:Georgia,serif;line-height:1.25}
+    h1{font-size:clamp(2.2rem,5vw,3.8rem);margin:20px 0}
+    h2{font-size:1.8rem;margin-top:44px}
+    h3{font-size:1.25rem;margin-top:28px}
+    p,li{font-size:1.03rem}
+    a{color:#B65335}
+    .tag{color:#B65335;letter-spacing:.12em;text-transform:uppercase;font-size:.75rem;font-weight:bold}
+    .note{background:#F0ECE6;border-left:4px solid #C96442;padding:18px 20px;margin:26px 0}
+    .cta{background:#1A1A1A;color:#fff;padding:26px;margin:36px 0}
+    .cta a{color:#fff}
+    footer{border-top:1px solid #ddd;margin-top:50px;padding-top:24px}
+  </style>
+</head>
+<body>
+<main>
+  <div class="tag">IA vocale · Tour de parole · Évaluation</div>
+  <h1>Agents vocaux : réduire les interruptions et les silences</h1>
+  <p><strong>Publié le 2 novembre 2026</strong></p>
+
+  <p>Un agent vocal doit prendre la parole au bon moment. S'il répond trop tôt, il coupe le client pendant une hésitation. S'il attend trop longtemps, la conversation semble lente et artificielle. Ce problème paraît simple, mais il influence directement la qualité perçue, la durée des appels et la réussite des actions métier.</p>
+
+  <p>Les travaux récents apportent deux éléments utiles. Une prépublication montre que les données de conversation sont mieux adaptées que des phrases isolées pour apprendre à détecter la fin d'un tour. En parallèle, un benchmark ouvert propose de comparer les modèles sur des pauses réelles, avec des budgets explicites de latence et de fausses interruptions. Pour une agence, cela change la façon de tester un agent vocal.</p>
+
+  <h2>La fin d'un tour ne se détecte pas avec un simple chronomètre</h2>
+
+  <p>Dans une architecture classique, l'agent attend un silence puis lance la reconnaissance, le raisonnement et la réponse. Le problème est qu'un silence de quelques centaines de millisecondes peut avoir plusieurs significations. Le client peut avoir terminé, chercher un mot, corriger une date ou attendre simplement que l'agent l'écoute.</p>
+
+  <p>Un seuil fixe ne peut pas distinguer ces situations. Il produit soit des interruptions, soit des temps morts. La mesure utile doit donc associer deux critères : le nombre de fois où l'agent coupe la parole et le temps d'attente après une vraie fin de phrase.</p>
+
+  <h2>Des données conversationnelles réduisent les fausses interruptions</h2>
+
+  <p>La recherche <a href="https://arxiv.org/abs/2610.39742">The Importance of Speech Genre for End-of-Turn Detector Training</a>, soumise le 29 octobre 2026, compare deux corpus construits avec le même processus d'annotation. Le premier contient des conversations à plusieurs tours entre humains. Le second contient des phrases isolées dans un format humain-machine.</p>
+
+  <p>Le même détecteur streaming est entraîné sur les deux types de données. Sur quatre jeux de test, le modèle entraîné sur des conversations obtient jusqu'à 0,45 point de F1 supplémentaire. Le gain vient surtout d'une réduction des fausses alertes pendant les pauses et les hésitations au milieu d'une phrase.</p>
+
+  <p>La limite est importante : il s'agit d'une prépublication, et les chiffres ne garantissent pas le même résultat sur les appels de RoehAI. La conclusion pratique reste solide : un jeu de test composé uniquement de phrases propres peut cacher les erreurs les plus gênantes en production.</p>
+
+  <h2>Un benchmark ouvert mesure le compromis entre vitesse et écoute</h2>
+
+  <p>Le projet open source <a href="https://github.com/livekit/eot-bench">eot-bench</a> fournit un cadre reproductible pour évaluer la détection de fin de tour. Le jeu de données rassemble des conversations réelles entre humains et agents dans 14 langues, dont le français. Chaque tour contient les pauses intermédiaires et la pause finale, afin de tester la décision réellement prise par un agent en direct.</p>
+
+  <p>Le benchmark ne réduit pas l'évaluation à un seul score. Il mesure le taux de fausses interruptions à un budget de latence donné, puis le délai moyen nécessaire pour répondre en respectant une limite de fausses coupures. Cette approche est plus proche de la production qu'une simple précision hors ligne.</p>
+
+  <p>Dans les résultats publiés par le projet, le détecteur LiveKit Turn Detector v1 atteint 9,9 % de fausses coupures à 300 millisecondes sur l'anglais et 543 millisecondes de délai à un budget de 5 % de fausses coupures. Ces chiffres appartiennent à l'évaluation du projet et ne doivent pas être présentés comme une garantie générale. Ils montrent surtout qu'un agent doit choisir un point de fonctionnement selon le secteur et le coût d'une interruption.</p>
+
+  <h2>Ce que cela change pour les agences d'agents vocaux</h2>
+
+  <p>Une agence sérieuse doit tester l'écoute et la prise de parole sur les appels réels, pas uniquement la transcription. Les tests devraient inclure :</p>
+
+  <ul>
+    <li>des pauses au milieu d'une demande, avec hésitations et corrections ;</li>
+    <li>des appels avec bruit, accents et plusieurs locuteurs ;</li>
+    <li>des demandes courtes qui exigent une réponse rapide ;</li>
+    <li>des actions sensibles qui ne doivent jamais partir sur une phrase incomplète ;</li>
+    <li>des mesures par langue, secteur, fournisseur et type de connexion.</li>
+  </ul>
+
+  <p>Le seuil de décision doit aussi dépendre de l'action. Une réponse informative peut être déclenchée rapidement. Une réservation, un SMS, un transfert ou une modification de calendrier doit demander une information suffisamment complète et, si nécessaire, une confirmation explicite.</p>
+
+  <h2>Ce que RoehAI peut tester ou adapter</h2>
+
+  <h3>1. Construire un jeu de pauses réalistes</h3>
+  <p>RoehAI peut enregistrer 300 à 500 demandes par secteur, puis annoter les pauses intermédiaires et les fins de tours. Il faut inclure le français québécois, le français congolais, les noms propres, les numéros et les formulations spontanées. Le résultat attendu est une mesure claire des fausses interruptions et du silence après la fin réelle.</p>
+
+  <h3>2. Comparer trois politiques de réponse</h3>
+  <p>Il est utile de comparer un seuil fixe, un détecteur entraîné sur des conversations et une politique qui combine confiance, durée du silence et état de l'outil. Les indicateurs doivent être le taux de fausses coupures, le temps avant le premier audio, les reprises de parole et les actions déclenchées trop tôt.</p>
+
+  <h3>3. Séparer conversation et action</h3>
+  <p>Un détecteur rapide peut aider l'agent à répondre naturellement sans autoriser automatiquement une action métier. Les outils sensibles doivent vérifier les champs requis, la stabilité de la demande et l'identité du locuteur principal avant exécution.</p>
+
+  <h2>Conclusion</h2>
+
+  <p>La fluidité d'un agent vocal ne dépend pas uniquement de la vitesse du modèle. Elle dépend aussi de sa capacité à reconnaître une hésitation, à attendre une correction et à prendre la parole avec un délai cohérent. Les recherches récentes invitent les agences à tester les conversations naturelles et à mesurer explicitement le compromis entre silence et interruption.</p>
+
+  <p>Chez <a href="https://roehai.com">RoehAI</a>, cette logique peut guider l'adaptation des agents aux langues, aux secteurs et aux intégrations métier. Découvrez les agents vocaux RoehAI pour concevoir des automatisations plus naturelles, mesurables et contrôlables.</p>
+
+  <div class="note"><strong>Statut des résultats :</strong> le benchmark eot-bench et ses outils sont directement utilisables pour structurer une évaluation. L'étude sur le genre des conversations reste une prépublication. Les gains doivent être reproduits sur les données et les appels de RoehAI.</div>
+
+  <h2>Sources et références</h2>
+  <ol>
+    <li><strong>The Importance of Speech Genre for End-of-Turn Detector Training</strong>, Rini Sharon, Kadri Hacioglu, Jeena Prakash et Andreas Stolcke, 29 octobre 2026, prépublication. <a href="https://arxiv.org/abs/2610.39742">Lire la publication</a></li>
+    <li><strong>LiveKit End-of-Turn Benchmark</strong>, LiveKit, 2026, benchmark et code open source. <a href="https://github.com/livekit/eot-bench">Voir le dépôt et les données</a></li>
+  </ol>
+
+  <footer>RoehAI, agents vocaux adaptés aux besoins réels des entreprises.</footer>
+</main>
+</body>
+</html>
