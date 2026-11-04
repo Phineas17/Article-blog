@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents vocaux : réduire la latence avec un routage intelligent</title>
+  <meta name="description" content="Une prépublication explore le routage des demandes vocales entre une réponse rapide et un modèle expert selon la difficulté.">
+  <link rel="canonical" href="https://phineas17.github.io/Article-blog/articles/agents-vocaux-routage-latence.html">
+  <style>
+    body{margin:0;background:#FAF9F7;color:#1A1A1A;font-family:Arial,sans-serif;line-height:1.75}
+    main{max-width:820px;margin:0 auto;padding:48px 22px}
+    h1,h2,h3{font-family:Georgia,serif;line-height:1.25}
+    h1{font-size:clamp(2.2rem,5vw,3.8rem);margin:20px 0}
+    h2{font-size:1.8rem;margin-top:44px}
+    h3{font-size:1.25rem;margin-top:28px}
+    p,li{font-size:1.03rem}
+    a{color:#B65335}
+    .tag{color:#B65335;letter-spacing:.12em;text-transform:uppercase;font-size:.75rem;font-weight:bold}
+    .note{background:#F0ECE6;border-left:4px solid #C96442;padding:18px 20px;margin:26px 0}
+    footer{border-top:1px solid #ddd;margin-top:50px;padding-top:24px}
+  </style>
+</head>
+<body>
+<main>
+  <div class="tag">IA vocale · Latence · Routage</div>
+  <h1>Agents vocaux : réduire la latence avec un routage intelligent</h1>
+  <p><strong>Publié le 4 novembre 2026</strong></p>
+
+  <p>Dans un agent vocal, toutes les demandes ne nécessitent pas le même niveau de raisonnement. Confirmer les heures d'ouverture, prendre un message ou retrouver une disponibilité simple peut être traité rapidement. Une demande ambiguë, une modification de calendrier ou une question nécessitant plusieurs sources demande davantage de vérification.</p>
+
+  <p>Utiliser le modèle le plus puissant pour chaque tour augmente les coûts et le temps avant la première réponse audio. Utiliser uniquement un modèle rapide peut réduire la qualité sur les cas complexes. Une prépublication récente étudie une solution intermédiaire : décider automatiquement quand répondre localement et quand transmettre la demande à un expert.</p>
+
+  <h2>Le principe du routage au début de la réponse</h2>
+
+  <p>La recherche <a href="https://arxiv.org/abs/2611.01639">Local or Escalate? Post-Training Expert Routing for Real-Time Duplex Speech Models</a>, soumise le 1er novembre 2026, examine des modèles vocaux full-duplex qui écoutent et parlent en continu.</p>
+
+  <p>Les auteurs gèlent un modèle vocal existant, MiniCPM-o 4.5, puis ajoutent une petite porte de décision basée sur les représentations internes déjà disponibles au moment où le modèle commence à répondre. Cette porte estime si la réponse locale risque d'échouer. Les demandes faciles peuvent rester sur le chemin rapide. Les demandes plus difficiles sont transmises à un modèle expert.</p>
+
+  <p>L'intérêt de cette méthode est qu'elle ne demande pas une nouvelle génération de jetons pour choisir la route. Les seuils peuvent aussi être ajustés sans modifier toute la politique de dialogue.</p>
+
+  <h2>Les résultats annoncés</h2>
+
+  <p>Sur leur benchmark interne, les auteurs rapportent une amélioration de 27,1 points de l'exactitude grâce au transfert sélectif. Par rapport à l'utilisation systématique du modèle expert, le temps moyen avant le premier audio diminue de 31,5 %.</p>
+
+  <p>Ces chiffres proviennent d'une prépublication et d'un environnement de recherche. Ils ne prouvent pas que la même réduction sera obtenue avec les agents, les outils, les langues et les modèles utilisés par RoehAI. Ils indiquent néanmoins une direction pratique : le routage peut être évalué comme une politique de production, avec un coût d'erreur et un coût de latence.</p>
+
+  <h2>Pourquoi cette approche est utile pour les agents métier</h2>
+
+  <p>Un agent qui traite des appels entrants reçoit généralement un mélange de demandes simples et complexes. Les règles d'un garage, d'un restaurant, d'une clinique ou d'un cabinet ne sont pas les mêmes, mais tous ces secteurs possèdent des tâches répétitives qui ne nécessitent pas toujours un raisonnement long.</p>
+
+  <p>Un routage peut par exemple envoyer une confirmation d'horaire vers un chemin rapide, tout en réservant le modèle expert aux cas suivants :</p>
+
+  <ul>
+    <li>date ou heure ambiguë ;</li>
+    <li>plusieurs changements dans la même demande ;</li>
+    <li>contradiction entre le CRM et le calendrier ;</li>
+    <li>demande nécessitant une recherche documentaire ;</li>
+    <li>action sensible comme un SMS, un appel sortant ou une modification de rendez-vous.</li>
+  </ul>
+
+  <p>Le routage ne doit pas être confondu avec une autorisation d'action. Un modèle rapide peut proposer une réponse, mais l'outil doit encore vérifier les champs requis, la confirmation du client et les permissions métier.</p>
+
+  <h2>Ce que cela change pour les agences d'agents vocaux</h2>
+
+  <p>Une agence sérieuse doit mesurer le routage avec plus que la vitesse moyenne. Les indicateurs importants sont :</p>
+
+  <ul>
+    <li>temps avant le premier audio par type de demande ;</li>
+    <li>exactitude de la réponse locale et de la réponse experte ;</li>
+    <li>taux de transfert inutile vers le modèle expert ;</li>
+    <li>taux de demandes complexes mal classées ;</li>
+    <li>coût moyen par appel et par secteur ;</li>
+    <li>taux d'erreur des arguments envoyés aux outils.</li>
+  </ul>
+
+  <p>Les résultats doivent être segmentés par langue. Un routeur entraîné sur l'anglais peut être moins fiable pour le français québécois, le français congolais ou une conversation comportant des noms locaux. La confiance du modèle doit donc être calibrée sur les données réelles de chaque clientèle.</p>
+
+  <h2>Ce que RoehAI peut tester ou adapter</h2>
+
+  <h3>1. Créer deux chemins de réponse</h3>
+
+  <p>Commencer avec un chemin rapide pour les questions fréquentes et un chemin expert pour les demandes longues, ambiguës ou sensibles. Le premier test peut utiliser les mêmes outils, mais avec des limites de raisonnement et des règles de validation différentes.</p>
+
+  <h3>2. Construire un jeu de classement</h3>
+
+  <p>Préparer 300 demandes vocales classées en trois catégories : réponse simple, demande nécessitant un outil et demande nécessitant une vérification renforcée. Ajouter des accents, du bruit, des corrections et des demandes en français et en anglais.</p>
+
+  <h3>3. Mesurer le compromis qualité, coût et latence</h3>
+
+  <p>Comparer un modèle unique, un routage aléatoire et un routeur basé sur la confiance. Mesurer le temps avant le premier audio, le taux de réussite de la tâche, le coût de calcul et les erreurs évitées. Le routage ne doit être conservé que s'il réduit la latence sans augmenter les erreurs métier critiques.</p>
+
+  <h2>Conclusion</h2>
+
+  <p>Le routage intelligent peut aider les agents vocaux à répondre rapidement aux demandes simples tout en réservant davantage de raisonnement aux situations qui le méritent. Il ne remplace pas les validations d'outils et ne garantit pas automatiquement une meilleure expérience.</p>
+
+  <p>Chez <a href="https://roehai.com">RoehAI</a>, cette approche peut être testée par secteur, par langue et par type d'intégration. Découvrez les agents vocaux RoehAI pour construire des automatisations adaptées aux besoins réels des entreprises, avec des mesures de qualité, de fiabilité et de latence.</p>
+
+  <div class="note"><strong>Statut du résultat :</strong> la recherche est une prépublication. Elle propose une méthode prometteuse pour le routage de modèles vocaux, mais les chiffres doivent être reproduits sur les données, les langues et les outils de RoehAI.</div>
+
+  <h2>Sources et références</h2>
+  <ol>
+    <li><strong>Local or Escalate? Post-Training Expert Routing for Real-Time Duplex Speech Models</strong>, Ruoyu He, Jisen Li et collaborateurs, 1er novembre 2026, prépublication. <a href="https://arxiv.org/abs/2611.01639">Lire la publication</a></li>
+  </ol>
+
+  <footer>RoehAI, agents vocaux adaptés aux besoins réels des entreprises.</footer>
+</main>
+</body>
+</html>
