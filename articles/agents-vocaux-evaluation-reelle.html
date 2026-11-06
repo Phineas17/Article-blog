@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents vocaux : mesurer la qualité réelle, pas seulement la latence</title>
+  <meta name="description" content="Les nouveaux benchmarks vocaux évaluent timing, tâches, ancrage et langues pour mieux tester les agents IA en conditions réelles.">
+  <link rel="canonical" href="https://phineas17.github.io/Article-blog/articles/agents-vocaux-evaluation-reelle.html">
+  <style>
+    body{margin:0;background:#FAF9F7;color:#1A1A1A;font-family:Arial,sans-serif;line-height:1.75}
+    main{max-width:820px;margin:0 auto;padding:48px 22px}
+    h1,h2,h3{font-family:Georgia,serif;line-height:1.25}
+    h1{font-size:clamp(2.2rem,5vw,3.8rem);margin:20px 0}
+    h2{font-size:1.8rem;margin-top:44px}
+    h3{font-size:1.25rem;margin-top:28px}
+    p,li{font-size:1.03rem}
+    a{color:#B65335}
+    .tag{color:#B65335;letter-spacing:.12em;text-transform:uppercase;font-size:.75rem;font-weight:bold}
+    .note{background:#F0ECE6;border-left:4px solid #C96442;padding:18px 20px;margin:26px 0}
+    footer{border-top:1px solid #ddd;margin-top:50px;padding-top:24px}
+  </style>
+</head>
+<body>
+<main>
+  <div class="tag">IA vocale · Évaluation · Multilingue</div>
+  <h1>Agents vocaux : mesurer la qualité réelle, pas seulement la latence</h1>
+  <p><strong>Publié le 6 novembre 2026</strong></p>
+
+  <p>Un agent vocal peut répondre rapidement tout en échouant sur la tâche demandée. Il peut parler au mauvais moment, mal interpréter un numéro, perdre une instruction ancienne ou répondre avec une information qui ne correspond pas à la conversation. Mesurer uniquement le délai avant le premier audio ne suffit donc pas pour décider si un agent est prêt pour la production.</p>
+
+  <p>Trois travaux récents renforcent cette conclusion. InteractionBench propose de mesurer plusieurs dimensions sur les mêmes conversations. Omnilingua-AudioMC montre que la performance sur transcription ou texte ne prédit pas toujours la performance en audio multilingue. Enfin, une prépublication explore le calcul spéculatif pour réduire le délai des réponses et des appels d'outils dans les modèles full-duplex.</p>
+
+  <h2>InteractionBench réunit plusieurs critères dans un même test</h2>
+
+  <p>La publication <a href="https://arxiv.org/abs/2611.02430">InteractionBench</a>, soumise le 2 novembre 2026, présente un benchmark et un outil d'évaluation pour les systèmes vocaux en temps réel.</p>
+
+  <p>Le benchmark mesure quatre dimensions :</p>
+
+  <ul>
+    <li>le timing conversationnel et le contrôle du tour de parole ;</li>
+    <li>l'exactitude de tâches effectuées à l'oral ;</li>
+    <li>la capacité à chuchoter ou à modifier le volume ;</li>
+    <li>l'ancrage des réponses dans des conversations de plus de vingt tours.</li>
+  </ul>
+
+  <p>Les auteurs évaluent plusieurs systèmes dans 1 519 exécutions notées, avec 221 éléments par système et 13 scénarios. Ils observent une corrélation de 0,83 entre le timing et l'exactitude des tâches pour les systèmes full-duplex évalués.</p>
+
+  <p>Le benchmark montre aussi que les résultats dépendent de la façon dont la latence est mesurée. Le délai entendu par le client inclut le réseau, alors que l'horloge interne d'un serveur peut donner une valeur différente. Pour une agence, il faut donc mesurer la latence depuis l'expérience réelle du client.</p>
+
+  <h2>La performance texte ne prédit pas toujours la performance audio</h2>
+
+  <p>La prépublication <a href="https://arxiv.org/abs/2611.04390">Do Multi-Turn Conversational Capabilities Carry Over from Text to Speech?</a>, soumise le 3 novembre 2026, introduit Omnilingua-AudioMC.</p>
+
+  <p>Le benchmark contient 354 conversations et 1 404 critères d'évaluation dans dix langues. Les versions texte et audio conservent la même structure, les mêmes dépendances entre les tours et les mêmes critères.</p>
+
+  <p>Les résultats indiquent que deux modèles ayant des performances proches sur les transcriptions peuvent diverger fortement lorsqu'ils reçoivent directement la parole. Les écarts varient aussi selon la langue. L'étude montre notamment que remplacer l'historique audio précédent par des transcriptions générées peut récupérer une partie des performances perdues pour certains modèles.</p>
+
+  <p>La limite est claire : il s'agit d'une prépublication et le benchmark ne reproduit pas tous les appels métier. Il apporte néanmoins une règle importante : une agence ne doit pas conclure qu'un agent est multilingue simplement parce qu'il obtient de bons résultats sur des entrées textuelles.</p>
+
+  <h2>Le calcul spéculatif pourrait accélérer les appels d'outils</h2>
+
+  <p>La prépublication <a href="https://arxiv.org/abs/2611.06982">Decode Before You Hear</a>, publiée le 4 novembre 2026, étudie les modèles full-duplex qui traitent la parole par blocs.</p>
+
+  <p>Les auteurs observent que le prochain bloc audio ne change pas toujours la sortie préparée pendant le bloc précédent. Leur méthode utilise les périodes de calcul disponibles pendant l'écoute pour préparer une réponse, puis vérifie cette hypothèse lorsque l'audio réel arrive.</p>
+
+  <p>Sur leur benchmark TickTock-Bench, ils rapportent une accélération de 2,6 à 2,8 fois pour les blocs de parole et jusqu'à 23,4 fois pour les blocs d'appel d'outils. Le délai de décodage avant le début d'une réponse diminue de 73 % dans leurs tests.</p>
+
+  <p>Ce résultat reste expérimental. Il est surtout pertinent pour les équipes qui contrôlent leur modèle full-duplex et leur infrastructure d'inférence. Il ne doit pas être présenté comme une amélioration automatiquement disponible dans une architecture basée sur des services séparés.</p>
+
+  <h2>Ce que cela change pour les agences d'agents vocaux</h2>
+
+  <p>Une agence sérieuse doit tester un agent comme un système complet. Les évaluations devraient combiner :</p>
+
+  <ul>
+    <li>la latence entendue par le client ;</li>
+    <li>les fausses interruptions et les silences trop longs ;</li>
+    <li>la réussite de la tâche et l'exactitude des arguments d'outil ;</li>
+    <li>la conservation de la mémoire après plusieurs tours ;</li>
+    <li>la performance par langue, accent, bruit et secteur ;</li>
+    <li>la fidélité des réponses aux documents et aux données métier.</li>
+  </ul>
+
+  <p>Les actions sensibles doivent être évaluées séparément des réponses informatives. Une erreur sur une phrase générale n'a pas le même coût qu'une mauvaise date dans un calendrier, un mauvais numéro dans un SMS ou une réservation créée pour le mauvais client.</p>
+
+  <h2>Ce que RoehAI peut tester ou adapter</h2>
+
+  <h3>1. Créer un benchmark interne inspiré d'InteractionBench</h3>
+
+  <p>RoehAI peut préparer 13 scénarios adaptés à ses secteurs prioritaires : garages, restaurants, cliniques, cabinets professionnels et immobilier. Chaque scénario peut contenir des demandes courtes, des interruptions, des corrections et des actions métier.</p>
+
+  <h3>2. Comparer texte et audio par langue</h3>
+
+  <p>Pour chaque scénario, conserver une version texte et une version audio en français québécois, français congolais et anglais canadien. Comparer l'intention, la mémoire, les arguments d'outil et la réussite finale.</p>
+
+  <h3>3. Mesurer la latence du point de vue du client</h3>
+
+  <p>Enregistrer le temps entre la fin perceptible de la demande et le premier audio reçu par le client. Ajouter les délais Telnyx, réseau, modèle, outil et synthèse. Cette mesure doit être comparée au temps affiché dans les journaux internes.</p>
+
+  <h2>Conclusion</h2>
+
+  <p>Les nouveaux travaux montrent qu'un agent vocal ne doit pas être évalué uniquement comme un modèle de transcription ou comme une voix rapide. Il doit être évalué comme un système qui écoute, comprend, agit, conserve l'état et répond dans plusieurs langues.</p>
+
+  <p>Chez <a href="https://roehai.com">RoehAI</a>, ces méthodes peuvent guider la création de tests par secteur, l'adaptation des agents aux langues et la sécurisation des intégrations métier. Découvrez les agents vocaux RoehAI pour construire des automatisations mesurables, fiables et adaptées aux besoins réels des entreprises.</p>
+
+  <div class="note"><strong>Statut des résultats :</strong> InteractionBench et Omnilingua-AudioMC sont des benchmarks directement utiles pour structurer des tests, mais leurs résultats doivent être reproduits sur les appels RoehAI. Decode Before You Hear est une prépublication expérimentale destinée aux architectures full-duplex contrôlées.</div>
+
+  <h2>Sources et références</h2>
+  <ol>
+    <li><strong>InteractionBench: Measuring Timing, Task Accuracy, Whisper and Volume, and Grounding in Real-Time Voice Systems</strong>, Richard Yucheng He, Chen Xu, Yihang Liu, Tairan Chen et Baodong Cao, 2 novembre 2026, prépublication. <a href="https://arxiv.org/abs/2611.02430">Lire la publication</a></li>
+    <li><strong>Do Multi-Turn Conversational Capabilities Carry Over from Text to Speech?</strong>, Jiaming Zhou, Pei Zhang, Shiwan Zhao et collaborateurs, 3 novembre 2026, prépublication. <a href="https://arxiv.org/abs/2611.04390">Lire la publication</a></li>
+    <li><strong>Decode Before You Hear: Speculative Listening for Chunk-Interleaved Full-Duplex Speech Language Models</strong>, Yutong Bian, Yanglin Zhang, Yuxiang Wang et collaborateurs, 4 novembre 2026, prépublication. <a href="https://arxiv.org/abs/2611.06982">Lire la publication</a></li>
+  </ol>
+
+  <footer>RoehAI, agents vocaux adaptés aux besoins réels des entreprises.</footer>
+</main>
+</body>
+</html>
