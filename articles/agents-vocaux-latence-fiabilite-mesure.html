@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agents vocaux : mesurer la vraie latence et la fiabilité | RoehAI</title>
+<meta name="description" content="Des recherches récentes montrent comment mesurer la latence réelle, accélérer l'ASR et mieux détecter la frustration dans les agents vocaux.">
+<link rel="canonical" href="https://www.roehai.com/articles/agents-vocaux-latence-fiabilite-mesure.html">
+<style>
+:root{--bg:#FAF9F7;--ink:#1A1A1A;--accent:#C96442;--line:#E5E2DC}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;line-height:1.75}nav{padding:18px 6%;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}nav a{color:var(--ink);text-decoration:none}nav .brand{font-family:Georgia,serif;font-weight:700}nav .button{color:var(--accent);border:1px solid var(--accent);padding:7px 12px;font-size:.85rem}main{max-width:850px;margin:0 auto;padding:72px 24px}.eyebrow{color:var(--accent);font-size:.8rem;letter-spacing:.16em;text-transform:uppercase}h1,h2,h3{font-family:Georgia,serif;line-height:1.2}h1{font-size:clamp(2.3rem,6vw,4.2rem);margin:18px 0 26px}h2{font-size:2rem;margin-top:54px}h3{font-size:1.35rem;margin-top:30px}.intro{font-size:1.2rem;color:#3A3630;border-left:3px solid var(--accent);padding-left:20px;margin:30px 0 48px}p,li{font-size:1.02rem}a{color:var(--accent)}.note{background:#F5F3EF;border:1px solid var(--line);padding:20px;margin:28px 0}.cta{background:#1A1A1A;color:#fff;padding:30px;margin-top:50px}.cta a{color:#fff}.sources{border-top:1px solid var(--line);margin-top:50px;padding-top:25px}@media(max-width:600px){main{padding:48px 20px}nav{padding:14px 20px}h2{font-size:1.65rem}}
+</style>
+</head>
+<body>
+<nav><a class="brand" href="https://roehai.com">RoehAI</a><a class="button" href="https://www.roehai.com">Découvrir RoehAI</a></nav>
+<main>
+<div class="eyebrow">IA vocale · Veille du 18 novembre 2026</div>
+<h1>Agents vocaux : mesurer la vraie latence et la fiabilité</h1>
+<p class="intro">Un agent peut sembler rapide dans ses journaux internes et rester lent pour la personne au téléphone. Il peut aussi avoir une bonne transcription générale, mais mal comprendre un montant, couper la parole ou ne pas détecter la frustration d'un client. Les recherches récentes montrent pourquoi il faut mesurer l'expérience réelle.</p>
+<h2>Le problème concret de la mesure</h2>
+<p>La latence affichée par un serveur ne comprend pas toujours le réseau, la téléphonie, la synthèse et le temps avant que le client entende réellement la réponse. De la même façon, un faible WER ne garantit pas que les dates, montants, noms et arguments d'outils sont corrects.</p>
+<p>La qualité doit donc être évaluée sur des appels représentatifs, avec des interruptions, des accents, du bruit, des demandes métier et des réactions humaines.</p>
+<h2>DEVL : accélérer l'ASR sans réentraîner le modèle</h2>
+<p>La prépublication <a href="https://arxiv.org/abs/2611.20064">Decode Early, Verify Late</a>, publiée le 15 novembre 2026, propose une méthode d'inférence pour des modèles ASR hors ligne. Le système affiche des transcriptions partielles pendant l'écoute, puis vérifie la dernière version avec l'audio complet à la fin du tour.</p>
+<p>Les auteurs rapportent que 95 à 100 % des transcriptions finales sont identiques à celles du modèle hors ligne dans leurs tests. Avec Qwen3-ASR-1.7B sur une A100, ils mesurent une sortie finale médiane de 22 à 26 millisecondes après la fin du tour, jusqu'à 3,9 fois plus rapide que le mode streaming officiel dans leur configuration.</p>
+<p>Cette méthode est intéressante pour RoehAI parce qu'elle ne demande pas nécessairement un nouvel entraînement. Elle doit toutefois être testée avec les contraintes de Telnyx, les modèles disponibles et les appels en français.</p>
+<h2>Mesurer la latence côté client</h2>
+<p>Une comparaison externe de trois architectures pour une négociation téléphonique en espagnol a mesuré la latence entendue par l'auditeur. Les auteurs ont utilisé 77 appels par architecture et cinq scénarios de négociation.</p>
+<p>La latence médiane avant la réponse de contenu était de 2 616 millisecondes pour Pipecat, 3 090 millisecondes pour LiveKit et 2 444,8 millisecondes pour GPT-Live. L'écart entre les architectures était moins important que le délai réseau et audio. Un appel d'outil ajoutait entre 0,9 et 1,1 seconde.</p>
+<p>Les cascades ont aussi mal géré certains acquiescements parlés pendant la réponse. Dans plusieurs appels, un simple « ok » a été interprété comme une réponse du client. Ces résultats appartiennent à un seul domaine et à l'espagnol, mais ils donnent une règle importante : il faut mesurer la latence côté client et tester les backchannels.</p>
+<h2>La frustration ne se lit pas toujours dans la transcription</h2>
+<p>L'étude acceptée à des ateliers de santé et publiée le 16 novembre, <a href="https://arxiv.org/abs/2611.21001">Does the Voice Matter?</a>, analyse des appels cliniques déployés. Elle utilise 714 tours provenant de 30 appels, avec des annotations humaines.</p>
+<p>Les patients produisent souvent des réponses très courtes. Pour les tours d'un seul mot, la détection basée uniquement sur la transcription ne dépasse pas toujours le hasard. Dans l'étude, l'audio aide certains modèles, mais dégrade aussi les résultats pour d'autres. Un modèle spécialisé atteint 71,6 % globalement, mais ne détecte aucun des 18 tours frustrés d'un seul mot dans un jeu complémentaire.</p>
+<p>La conclusion utile est prudente : l'audio peut fournir des signaux importants, mais il faut le valider sur les appels réels du secteur. Il ne faut pas déclencher automatiquement une escalade sur une seule estimation émotionnelle.</p>
+<h2>Ce que cela change pour les agences d'agents vocaux</h2>
+<p>Une agence sérieuse doit distinguer la performance technique et l'expérience client.</p>
+<ul><li>Mesurer le délai entre la fin perceptible de la parole et le premier audio entendu.</li><li>Mesurer séparément la latence sans outil et la latence avec outil.</li><li>Tester les dates, montants, numéros, noms et confirmations.</li><li>Évaluer les interruptions, les acquiescements et les changements de demande.</li><li>Mesurer la frustration et les abandons par langue, secteur et type d'appel.</li></ul>
+<p>Les actions sensibles doivent utiliser des règles plus strictes que les réponses informatives. Une prédiction rapide peut préparer une recherche, mais elle ne doit pas créer une réservation ou envoyer un SMS sans confirmation suffisante.</p>
+<h2>Ce que RoehAI peut tester ou adapter</h2>
+<ol><li><strong>Priorité 1 :</strong> instrumenter la latence Telnyx, réseau, ASR, LLM, outil, TTS et premier audio côté client sur 200 appels.</li><li><strong>Priorité 2 :</strong> comparer l'ASR actuel à DEVL sur des demandes en français québécois et anglais canadien, en vérifiant les transcriptions finales et les arguments d'outils.</li><li><strong>Priorité 3 :</strong> créer un jeu de 300 appels avec interruptions, acquiescements, frustrations et demandes courtes. Comparer transcription seule, audio seul et combinaison des deux.</li></ol>
+<p>Cette démarche permet à <a href="https://roehai.com">RoehAI</a> d'adapter ses agents aux langues, aux secteurs et aux intégrations métier avec des indicateurs vérifiables.</p>
+<h2>Conclusion</h2>
+<p>Les nouvelles recherches ne disent pas qu'un modèle unique résoudra tous les problèmes. Elles montrent plutôt que la fiabilité vient de mesures précises, d'une instrumentation côté client et de validations adaptées aux risques.</p>
+<div class="cta"><strong>Vous voulez améliorer un agent vocal ?</strong><br><a href="https://roehai.com">Parlez à RoehAI</a> pour construire un système mesurable, adaptable et connecté à vos opérations.</div>
+<h2>Sources et références</h2>
+<ul class="sources"><li><a href="https://arxiv.org/abs/2611.20064">Decode Early, Verify Late: Streaming Offline Speech Recognizers Without Accuracy Loss</a>, Doyeob Kim, 15 novembre 2026, prépublication.</li><li><a href="https://arxiv.org/abs/2611.19118">Latency, Speech Recognition and Turn-Taking in Voice Agents for Spanish Phone Negotiation</a>, Jovan Popoca Moran et al., 14 novembre 2026, prépublication.</li><li><a href="https://arxiv.org/abs/2611.21001">Does the Voice Matter? Evaluating Frustration Detection on Deployed Clinical Voice-Agent Calls</a>, Annika Michael et al., 16 novembre 2026, publication acceptée à des ateliers spécialisés et prépublication.</li></ul>
+<div class="note"><strong>Statut :</strong> l'article combine deux prépublications récentes et une étude acceptée dans des ateliers spécialisés. Les résultats doivent être reproduits sur les appels et les langues de RoehAI.</div>
+</main>
+</body>
+</html>
