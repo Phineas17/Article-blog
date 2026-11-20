@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPT-Live-1.1 : ce que cela change pour les agents vocaux | RoehAI</title>
+<meta name="description" content="GPT-Live-1.1 apporte une voix full-duplex, la délégation backend et un mode standby. Voici les tests à réaliser avant une adoption par une agence.">
+<link rel="canonical" href="https://www.roehai.com/articles/gpt-live-1-1-agents-vocaux.html">
+<style>
+:root{--bg:#FAF9F7;--ink:#1A1A1A;--accent:#C96442;--line:#E5E2DC}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;line-height:1.75}nav{padding:18px 6%;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}nav a{color:var(--ink);text-decoration:none}nav .brand{font-family:Georgia,serif;font-weight:700}nav .button{color:var(--accent);border:1px solid var(--accent);padding:7px 12px;font-size:.85rem}main{max-width:850px;margin:0 auto;padding:72px 24px}.eyebrow{color:var(--accent);font-size:.8rem;letter-spacing:.16em;text-transform:uppercase}h1,h2,h3{font-family:Georgia,serif;line-height:1.2}h1{font-size:clamp(2.3rem,6vw,4.2rem);margin:18px 0 26px}h2{font-size:2rem;margin-top:54px}h3{font-size:1.35rem;margin-top:30px}.intro{font-size:1.2rem;color:#3A3630;border-left:3px solid var(--accent);padding-left:20px;margin:30px 0 48px}p,li{font-size:1.02rem}a{color:var(--accent)}.note{background:#F5F3EF;border:1px solid var(--line);padding:20px;margin:28px 0}.cta{background:#1A1A1A;color:#fff;padding:30px;margin-top:50px}.cta a{color:#fff}.sources{border-top:1px solid var(--line);margin-top:50px;padding-top:25px}@media(max-width:600px){main{padding:48px 20px}nav{padding:14px 20px}h2{font-size:1.65rem}}
+</style>
+</head>
+<body>
+<nav><a class="brand" href="https://roehai.com">RoehAI</a><a class="button" href="https://www.roehai.com">Découvrir RoehAI</a></nav>
+<main>
+<div class="eyebrow">IA vocale · Veille du 20 novembre 2026</div>
+<h1>GPT-Live-1.1 : ce que cela change pour les agents vocaux</h1>
+<p class="intro">Une nouvelle version de GPT-Live est maintenant disponible dans l'API. Son intérêt principal n'est pas seulement la qualité de la voix. Elle propose une architecture où le modèle vocal continue la conversation pendant qu'un backend effectue une recherche, appelle un outil ou exécute une tâche.</p>
+<h2>Une capacité produit désormais accessible</h2>
+<p>La documentation officielle OpenAI présente GPT-Live-1.1 comme un modèle vocal full-duplex pour les conversations multilingues. Il peut écouter pendant qu'il parle, gérer des appels de fonctions et déléguer un travail complexe à un backend distinct.</p>
+<p>Cette séparation est importante pour une agence. Le modèle vocal peut se concentrer sur le tour de parole, les interruptions et la restitution. Le backend peut conserver la logique métier, les permissions, les outils et les règles de validation déjà utilisées par l'entreprise.</p>
+<p>OpenAI indique aussi que GPT-Live-1.1 améliore la transcription et la stabilité de l'accent et de la voix entre les langues. Ces affirmations viennent de la documentation du fournisseur. Elles doivent être vérifiées sur les langues et les secteurs de chaque déploiement.</p>
+<h2>La délégation backend évite de reconstruire toute la logique métier</h2>
+<p>Le guide officiel décrit deux options. Une délégation vers Responses permet d'utiliser un backend hébergé par OpenAI. Une délégation client permet de connecter son propre agent, son propre modèle ou son propre service.</p>
+<p>Pour RoehAI, le deuxième chemin est particulièrement intéressant. Il permettrait de conserver les outils métier, les contrôles de confirmation, les appels Telnyx et les intégrations de calendrier ou de CRM, tout en testant une interface vocale différente.</p>
+<p>La séparation doit rester claire. Le modèle vocal peut décider qu'une demande nécessite un backend. Il ne doit pas pour autant obtenir automatiquement le droit d'envoyer un SMS, de déplacer un rendez-vous ou de modifier une fiche client. Les permissions doivent rester dans le backend.</p>
+<h2>Le mode standby peut réduire le coût des silences</h2>
+<p>GPT-Live-1.1 introduit un mode standby pour les sessions WebRTC. Après un délai d'inactivité configurable, l'inférence se met temporairement en pause tandis que la connexion reste ouverte. La documentation officielle affiche un tarif standby inférieur au tarif actif.</p>
+<p>Cette fonction peut être utile pour un appel où le client consulte un document, cherche une information ou reste silencieux pendant une opération. Elle doit néanmoins être testée avec la téléphonie, car une pause trop longue peut donner l'impression que l'appel est interrompu.</p>
+<h2>Ce que cela change pour les agences d'agents vocaux</h2>
+<p>Une agence sérieuse doit comparer une nouvelle interface vocale à la stack existante avec des mesures identiques :</p>
+<ul><li>temps avant le premier audio utile;</li><li>latence côté client pendant une recherche ou un appel d'outil;</li><li>exactitude des dates, montants, numéros et noms;</li><li>gestion des interruptions et des corrections;</li><li>respect des permissions avant une action métier;</li><li>coût actif, coût standby et coût du backend.</li></ul>
+<p>Il faut aussi distinguer une conversation fluide d'une tâche réellement réussie. Un agent peut répondre naturellement tout en appelant le mauvais outil ou en oubliant une confirmation.</p>
+<h2>Ce que RoehAI peut tester ou adapter</h2>
+<ol><li><strong>Priorité 1 :</strong> connecter un environnement de test à GPT-Live-1.1 avec une délégation client vers un backend contrôlé par RoehAI. Tester recherche client, lecture de disponibilité et confirmation de rendez-vous.</li><li><strong>Priorité 2 :</strong> comparer GPT-Live-1.1 à Gemini Live sur 200 appels en français québécois, anglais canadien et demandes avec noms, chiffres et dates.</li><li><strong>Priorité 3 :</strong> tester le standby sur des appels de 5 à 15 minutes. Mesurer coût, délai de reprise, abandon et perception du silence.</li></ol>
+<p>RoehAI peut ainsi évaluer une nouvelle technologie sans abandonner ses règles métier. La plateforme reste libre d'adapter le moteur selon la langue, le secteur, le coût et le niveau de risque.</p>
+<h2>Conclusion</h2>
+<p>GPT-Live-1.1 est une évolution directement testable pour les agences qui veulent combiner conversation full-duplex et logique métier séparée. Son intérêt dépendra toutefois de la qualité réelle des appels, de la latence des outils et de la sécurité du backend.</p>
+<div class="cta"><strong>Vous voulez comparer les moteurs vocaux ?</strong><br><a href="https://roehai.com">Découvrez RoehAI</a> pour tester des agents vocaux adaptés à vos outils, vos langues et vos opérations.</div>
+<h2>Sources et références</h2>
+<ul class="sources"><li><a href="https://developers.openai.com/api/docs/models/gpt-live-1.1">GPT-Live-1.1 Model</a>, OpenAI, documentation officielle consultée le 20 novembre 2026, capacité produit disponible dans l'API.</li><li><a href="https://developers.openai.com/api/docs/guides/live">Getting started with GPT-Live</a>, OpenAI, documentation officielle consultée le 20 novembre 2026, délégation backend et conversations full-duplex.</li><li><a href="https://developers.openai.com/api/docs/guides/voice-agents">Voice agents</a>, OpenAI, documentation officielle consultée le 20 novembre 2026, comparaison des architectures vocales.</li></ul>
+<div class="note"><strong>Statut :</strong> l'article repose sur une capacité produit officiellement documentée. Les améliorations annoncées doivent être validées dans l'environnement RoehAI avant toute migration ou promesse client.</div>
+</main>
+</body>
+</html>
