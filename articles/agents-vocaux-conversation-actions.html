@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents vocaux : relier conversation et actions métier</title>
+  <meta name="description" content="Duopra montre comment améliorer l'exécution des outils par les agents vocaux full-duplex. Enjeux, limites et tests utiles pour les agences.">
+  <link rel="canonical" href="https://www.roehai.com/articles/agents-vocaux-conversation-actions.html">
+  <style>
+    body{margin:0;background:#FAF9F7;color:#1A1A1A;font-family:Arial,sans-serif;line-height:1.75}
+    main{max-width:820px;margin:0 auto;padding:48px 22px 80px}
+    a{color:#C96442}
+    h1,h2,h3{line-height:1.2}
+    h1{font-size:clamp(2.1rem,5vw,3.5rem);margin-bottom:20px}
+    h2{margin-top:42px;font-size:1.65rem}
+    h3{margin-top:28px;font-size:1.2rem}
+    .eyebrow{color:#C96442;text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;font-weight:bold}
+    .intro{font-size:1.15rem;color:#5f5a54}
+    .note{background:#F0EDE7;padding:18px 20px;border-left:3px solid #C96442}
+    li{margin:10px 0}
+    .cta{background:#1A1A1A;color:#FAF9F7;padding:26px;margin-top:42px}
+    .cta a{color:#F2B49C}
+    footer{margin-top:60px;padding-top:24px;border-top:1px solid #E5E2DC;color:#6B6660;font-size:.92rem}
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">IA vocale · outils · fiabilité</p>
+  <h1>Agents vocaux : relier conversation et actions métier</h1>
+  <p class="intro">Un agent vocal peut écouter, répondre rapidement et gérer les interruptions, tout en échouant au moment le plus important : envoyer une demande complète au calendrier, au CRM ou à un autre outil. Une prépublication récente propose une piste pour réduire cet écart.</p>
+
+  <h2>Le problème concret des agents full-duplex</h2>
+  <p>Les agents full-duplex sont conçus pour écouter et parler de manière continue. Ils peuvent gérer une interruption, produire un retour bref et reprendre la conversation. Mais une conversation naturelle ne garantit pas une action correcte.</p>
+  <p>Dans un appel de prise de rendez-vous, l’agent doit repérer l’intention, conserver la date et l’heure, intégrer une correction, puis déclencher le bon outil avec des arguments complets. Une seule information oubliée peut produire une réservation erronée, une recherche inutile ou une confirmation impossible.</p>
+  <p>Le travail <a href="https://arxiv.org/abs/2611.25773">Duopra: From Full-Duplex Conversation to Full-Duplex Agency</a>, publié sur arXiv le 19 novembre 2026 par des chercheurs de Shanghai Jiao Tong University, Tencent et partenaires, traite directement ce passage entre parole et exécution.</p>
+
+  <h2>Ce que propose Duopra</h2>
+  <p>Duopra entraîne un modèle vocal à apprendre deux dimensions ensemble. La première est conversationnelle : savoir quand écouter, parler, interrompre ou reprendre. La seconde est opérationnelle : décider quand appeler un outil et transmettre une demande suffisamment complète.</p>
+  <p>Le système utilise une interface d’action commune. L’agent peut appeler directement un outil ou déléguer la tâche à un modèle backend. Dans ce second cas, le backend est présenté comme un outil qui reçoit une demande autonome, avec le contexte nécessaire à son exécution.</p>
+  <p>La méthode combine un entraînement supervisé du protocole, un apprentissage par renforcement qui récompense les appels opportuns et complets, puis une étape de réparation destinée à limiter la dégradation de la parole après les mises à jour du raisonnement.</p>
+
+  <h2>Résultats annoncés et limites</h2>
+  <p>Sur Full-Duplex-Bench v3, les auteurs rapportent une progression de Pass@1 de 4,7 % à 44,7 % avec le même backend Qwen3-8B. L’appel direct aux outils atteint 47,7 %, et la délégation à un backend DeepSeek atteint 49,3 %. Ces chiffres indiquent que l’initiation fidèle de l’action est un goulot d’étranglement distinct de la qualité de la conversation.</p>
+  <p>Ces résultats restent expérimentaux. Il s’agit d’une prépublication, les évaluations sont menées sur des benchmarks et le modèle couvre principalement l’anglais et le chinois selon les éléments publics du projet. Les scores ne prédisent donc pas automatiquement la fiabilité en français québécois, en français congolais, en lingala ou dans un secteur particulier.</p>
+  <p>La publication signale aussi un compromis : certaines mesures de prise de parole spontanée peuvent se dégrader. Un agent qui appelle mieux les outils doit donc être évalué aussi sur ses interruptions, ses silences, ses confirmations et son naturel.</p>
+
+  <h2>Ce que cela change pour les agences d’agents vocaux</h2>
+  <p>La leçon principale est méthodologique. Une agence ne doit pas mesurer seulement la qualité de la voix ou le taux de transcription. Elle doit séparer au moins quatre étapes :</p>
+  <ul>
+    <li>la compréhension de la demande prononcée;</li>
+    <li>la décision d’appeler ou non un outil;</li>
+    <li>la complétude et l’exactitude des arguments;</li>
+    <li>la réussite de l’état final dans le système métier.</li>
+  </ul>
+  <p>Cette séparation permet de localiser le défaut. Si l’agent comprend la demande mais n’envoie jamais l’appel, le problème est l’initiation. Si l’outil est appelé avec la mauvaise heure, le problème est la conservation d’un argument vocal. Si l’action réussit mais que l’agent annonce un résultat différent, le problème concerne la vérification et la formulation de la réponse.</p>
+  <p>Une agence sérieuse doit aussi tester les corrections en cours de phrase. Par exemple : « mardi à 14 heures, non, plutôt jeudi matin ». Le test doit vérifier que l’ancienne valeur disparaît vraiment de la requête finale.</p>
+
+  <h2>Ce que RoehAI peut tester ou adapter</h2>
+  <h3>1. Créer un bac à sable avec état final vérifiable</h3>
+  <p>Rejouer 100 scénarios de calendrier, CRM et SMS avec un environnement de test. Pour chaque appel, enregistrer la demande vocale, l’appel d’outil, les arguments, l’état final et la phrase de confirmation. La priorité est de mesurer les erreurs coûteuses, pas seulement le taux de transcription.</p>
+
+  <h3>2. Comparer une architecture cascade et une exécution full-duplex</h3>
+  <p>Conserver la stack actuelle comme référence, puis tester un prototype full-duplex sur les mêmes scénarios. Comparer le taux d’actions correctes, le délai avant l’appel d’outil, le temps avant le premier audio, les interruptions et les actions déclenchées par erreur.</p>
+
+  <h3>3. Ajouter des corrections et des voix concurrentes</h3>
+  <p>Introduire des changements de date, des hésitations, des acquiescements ambigus et des conversations en arrière-plan. Une action sensible doit être bloquée lorsque l’identité du locuteur, la valeur ou la confirmation sont incertaines.</p>
+
+  <h2>Pourquoi cette direction est utile pour RoehAI</h2>
+  <p>RoehAI peut tirer parti de cette recherche sans présenter Duopra comme une fonctionnalité déjà disponible. L’intérêt immédiat est d’adopter une architecture de test et de validation qui traite l’agent comme un système complet. La plateforme peut comparer plusieurs modèles, adapter les règles par langue et par secteur, et connecter les outils métier avec des contrôles indépendants.</p>
+  <p>Cette capacité d’adaptation compte autant que le choix d’un modèle. Un agent pour un garage, une clinique ou une entreprise immobilière n’a pas les mêmes données critiques, les mêmes risques ni les mêmes règles de confirmation. La recherche fournit une hypothèse technique. La production exige ensuite des mesures locales, des garde-fous et une amélioration continue.</p>
+
+  <h2>Conclusion</h2>
+  <p>Les agents vocaux doivent être évalués sur ce qu’ils font réellement, pas uniquement sur la fluidité de leur voix. Duopra montre qu’il est possible d’entraîner ensemble le contrôle conversationnel et l’exécution d’outils, mais ses résultats restent à valider dans chaque langue et chaque métier.</p>
+  <p>Pour découvrir comment <a href="https://roehai.com">RoehAI</a> peut concevoir et adapter des agents vocaux reliés à vos outils, demandez une analyse de votre processus d’appel et de vos critères de fiabilité.</p>
+
+  <div class="cta">
+    <strong>Vous déployez un agent vocal?</strong><br>
+    Testez ses actions sur des scénarios réels, mesurez les erreurs par langue et sécurisez chaque écriture métier avec <a href="https://roehai.com">les agents vocaux RoehAI</a>.
+  </div>
+
+  <h2>Sources et références</h2>
+  <ul>
+    <li><strong>Duopra: From Full-Duplex Conversation to Full-Duplex Agency</strong>, Chiyu Chen, Pengzhou Cheng et al., 19 novembre 2026, prépublication arXiv : <a href="https://arxiv.org/abs/2611.25773">article original</a>.</li>
+  </ul>
+  <p><strong>Statut :</strong> prépublication expérimentale. Les résultats sont prometteurs pour l’appel d’outils et la délégation, mais ne constituent pas une validation de production pour les langues et secteurs de RoehAI.</p>
+
+  <footer>Article informatif de RoehAI. Les résultats cités appartiennent à leurs auteurs et doivent être vérifiés dans un environnement contrôlé avant toute adoption.</footer>
+</main>
+</body>
+</html>
