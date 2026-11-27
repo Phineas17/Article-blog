@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents vocaux : réduire la latence de la synthèse vocale</title>
+  <meta name="description" content="TigerTTS explore une synthèse vocale parallèle et compacte pour accélérer le premier audio des agents vocaux.">
+  <link rel="canonical" href="https://www.roehai.com/articles/agents-vocaux-tts-latence-tigertts.html">
+  <style>
+    body{margin:0;background:#FAF9F7;color:#1A1A1A;font-family:Arial,sans-serif;line-height:1.75}
+    main{max-width:820px;margin:0 auto;padding:48px 22px 80px}
+    a{color:#C96442}
+    h1,h2,h3{line-height:1.2}
+    h1{font-size:clamp(2.1rem,5vw,3.5rem);margin-bottom:20px}
+    h2{margin-top:42px;font-size:1.65rem}
+    h3{margin-top:28px;font-size:1.2rem}
+    .eyebrow{color:#C96442;text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;font-weight:bold}
+    .intro{font-size:1.15rem;color:#5f5a54}
+    .note{background:#F0EDE7;padding:18px 20px;border-left:3px solid #C96442}
+    li{margin:10px 0}
+    .cta{background:#1A1A1A;color:#FAF9F7;padding:26px;margin-top:42px}
+    .cta a{color:#F2B49C}
+    footer{margin-top:60px;padding-top:24px;border-top:1px solid #E5E2DC;color:#6B6660;font-size:.92rem}
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">IA vocale · synthèse · latence</p>
+  <h1>Agents vocaux : réduire la latence de la synthèse vocale</h1>
+  <p class="intro">Dans un appel, quelques centaines de millisecondes peuvent faire la différence entre une réponse fluide et un silence qui donne l'impression que l'agent a cessé de fonctionner. Une nouvelle prépublication propose une approche compacte pour accélérer la génération du premier audio sans attendre toute la phrase.</p>
+
+  <h2>Le rôle de la synthèse dans la latence perçue</h2>
+  <p>La latence d'un agent vocal ne dépend pas uniquement de la reconnaissance de la parole ou du modèle de raisonnement. Après la production du texte, le système doit encore transformer la réponse en audio, envoyer les premiers paquets et les lire dans l'appel.</p>
+  <p>Une synthèse qui attend une phrase complète peut produire une voix correcte, mais elle retarde le début de la réponse. À l'inverse, une synthèse trop agressive peut commencer trop tôt, couper un mot ou répéter une partie de la phrase. Le bon objectif n'est donc pas seulement de réduire le temps total. Il faut réduire le délai avant le premier audio tout en conservant la stabilité du texte et la qualité de la voix.</p>
+
+  <h2>Ce que propose TigerTTS</h2>
+  <p><a href="https://arxiv.org/abs/2611.34241">TigerTTS: Draft-Guided Multi-Frame Parallel Speech-Token Language Model for Fast and Robust Text-to-Speech</a> a été publié sur arXiv le 25 novembre 2026 par Dewei Kong. Le système combine un modèle non autoregressif qui prépare une ébauche audio et un modèle autoregressif compact qui la raffine.</p>
+  <p>L'idée est comparable à une préparation en deux temps. Le premier modèle génère rapidement une base alignée avec le contenu. Le second améliore cette base par groupes de trames audio. Cette organisation permet de produire plusieurs tokens en parallèle au lieu de générer chaque élément l'un après l'autre.</p>
+  <p>TigerTTS utilise aussi un tokenizer FSQ sans codebook classique, une réduction du cache KV et une exécution optimisée avec CUDA Graphs. En mode rapide, le modèle prépare les 500 premières millisecondes avant la fin du décodage complet.</p>
+
+  <h2>Résultats annoncés</h2>
+  <p>Dans la configuration décrite par les auteurs, TigerTTS atteint un facteur temps réel de 0,05 sur un GPU, soit environ vingt fois le temps réel. Le modèle de base annoncé compte 0,15 milliard de paramètres. Les auteurs indiquent aussi une inférence environ cinq fois plus rapide que VoxCPM2 2B et seize fois plus rapide que CosyVoice 2 dans leurs configurations de référence.</p>
+  <p>Les résultats de contenu annoncés incluent un CER de 1,09 et un WER de 1,67 sur SEED, ainsi qu'un WER de 2,22, un score NMOS de 4,36 et une similarité de locuteur de 0,820 sur LibriSpeech test-clean.</p>
+  <p>Ces chiffres doivent être interprétés avec prudence. TigerTTS est une prépublication, les comparaisons dépendent du matériel, des réglages et des jeux de données, et aucune validation spécifique au français québécois ou aux appels téléphoniques de RoehAI n'est fournie.</p>
+
+  <h2>Ce que cela change pour les agences d'agents vocaux</h2>
+  <p>La recherche rappelle qu'une agence doit mesurer plusieurs latences distinctes :</p>
+  <ul>
+    <li>le temps entre la fin de la parole et le premier paquet audio;</li>
+    <li>le temps nécessaire pour produire une phrase complète;</li>
+    <li>le temps total avant la réponse finale;</li>
+    <li>le délai d'arrêt lorsque l'utilisateur interrompt l'agent.</li>
+  </ul>
+  <p>Une optimisation TTS peut sembler excellente sur le temps total et pourtant dégrader l'expérience si le premier audio arrive trop tard. Elle peut aussi produire une voix plus rapide mais moins naturelle, ou prononcer des nombres et des noms propres de manière instable.</p>
+  <p>Le test doit donc combiner des mesures techniques et une vérification métier. Pour un restaurant, l'agent doit prononcer correctement les heures et les noms. Pour un garage, il doit annoncer les modèles de véhicules et les créneaux. Pour une clinique, la priorité peut être la compréhension et la neutralité de la voix.</p>
+
+  <h2>Ce que RoehAI peut tester ou adapter</h2>
+  <h3>1. Mesurer le premier paquet audio</h3>
+  <p>Ajouter une mesure précise entre la réception du premier texte exploitable et la lecture du premier paquet TTS. Comparer p50 et p95 sur des réponses courtes, des appels d'outils et des réponses longues.</p>
+
+  <h3>2. Comparer la qualité avant la vitesse</h3>
+  <p>Tester la configuration actuelle avec un échantillon de phrases contenant des noms, des montants, des adresses, des dates et des numéros de téléphone. Comparer le temps avant le premier audio, la compréhension par des auditeurs et les erreurs de prononciation.</p>
+
+  <h3>3. Tester le barge-in</h3>
+  <p>Interrompre l'agent à différents moments de la phrase. Mesurer le délai entre la parole de l'utilisateur et l'arrêt de la voix, puis vérifier que la suite de la réponse ne reprend pas un contenu obsolète.</p>
+
+  <h2>Pourquoi cette piste est utile pour RoehAI</h2>
+  <p>RoehAI n'a pas besoin d'adopter TigerTTS immédiatement pour tirer parti de cette recherche. L'enseignement le plus directement applicable est de traiter la synthèse comme une partie mesurable de la chaîne complète.</p>
+  <p>La plateforme peut comparer plusieurs moteurs, régler la taille des segments, adapter les voix par secteur et conserver des seuils de qualité différents selon les actions. Une réponse de disponibilité peut privilégier la rapidité. Une confirmation de rendez-vous peut privilégier la précision et demander une répétition si la date ou l'heure est ambiguë.</p>
+  <p>Cette approche correspond à la réalité de la production : une même configuration ne convient pas toujours à toutes les langues, tous les téléphones et tous les métiers.</p>
+
+  <h2>Conclusion</h2>
+  <p>TigerTTS propose une architecture intéressante pour réduire le délai de synthèse, notamment le temps avant le premier audio. Ses résultats sont prometteurs, mais ils restent expérimentaux et doivent être vérifiés sur des appels réels, avec les voix, les langues et les intégrations utilisées par chaque client.</p>
+  <p>Découvrez comment <a href="https://roehai.com">RoehAI</a> peut mesurer et adapter vos agents vocaux selon vos exigences de qualité, de latence et de fiabilité.</p>
+
+  <div class="cta">
+    <strong>Vous voulez un agent vocal plus fluide?</strong><br>
+    Commencez par mesurer chaque étape de la réponse et testez les moteurs TTS sur vos propres appels avec <a href="https://roehai.com">les agents vocaux RoehAI</a>.
+  </div>
+
+  <h2>Sources et références</h2>
+  <ul>
+    <li><strong>TigerTTS: Draft-Guided Multi-Frame Parallel Speech-Token Language Model for Fast and Robust Text-to-Speech</strong>, Dewei Kong, 25 novembre 2026, prépublication arXiv : <a href="https://arxiv.org/abs/2611.34241">article original</a>.</li>
+  </ul>
+  <p><strong>Statut :</strong> prépublication expérimentale. Les mesures annoncées doivent être reproduites avec le matériel et les scénarios de production concernés.</p>
+
+  <footer>Article informatif de RoehAI. Les résultats cités appartiennent à leurs auteurs et ne constituent pas une promesse de disponibilité dans les agents RoehAI.</footer>
+</main>
+</body>
+</html>
